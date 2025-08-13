@@ -65,7 +65,7 @@ const AdminReviews: React.FC<AdminReviewsProps> = ({ dataVersion, currentUser })
       }
 
       const response = await axios.get(
-        `http://localhost:3001/api/reviews/moderation?status=${status}&page=${page}`,
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/reviews/moderation?status=${status}&page=${page}`,
         {
           headers: {
             'Authorization': `Bearer ${token}`
@@ -114,7 +114,7 @@ const AdminReviews: React.FC<AdminReviewsProps> = ({ dataVersion, currentUser })
       }
 
       await axios.put(
-        `http://localhost:3001/api/reviews/${reviewId}/moderate`,
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/reviews/${reviewId}/moderate`,
         {
           action,
           adminComment: '' // Пустой комментарий для прямого одобрения/отклонения
@@ -153,7 +153,7 @@ const AdminReviews: React.FC<AdminReviewsProps> = ({ dataVersion, currentUser })
         return;
       }
 
-      await axios.delete(`http://localhost:3001/api/reviews/${reviewId}`, {
+      await axios.delete(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/reviews/${reviewId}`, {
         headers: {
           'Authorization': `Bearer ${token}`
         }
@@ -177,7 +177,7 @@ const AdminReviews: React.FC<AdminReviewsProps> = ({ dataVersion, currentUser })
 
     try {
       await axios.put(
-        `http://localhost:3001/api/reviews/${reviewId}/moderate`,
+        `${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/reviews/${reviewId}/moderate`,
         {
           action: 'comment',
           adminComment: adminComment.trim()

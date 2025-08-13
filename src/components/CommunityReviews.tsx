@@ -36,7 +36,7 @@ const CommunityReviews: React.FC<CommunityReviewsProps> = ({ communityId }) => {
         return;
       }
 
-      const response = await fetch(`http://localhost:3001/api/reviews/community/${communityId}`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/reviews/community/${communityId}`);
       const data = await response.json();
       
       if (data.success) {
@@ -66,7 +66,7 @@ const CommunityReviews: React.FC<CommunityReviewsProps> = ({ communityId }) => {
   }) => {
     setSubmitting(true);
     try {
-      const response = await fetch(`http://localhost:3001/api/reviews/community/${communityId}`, {
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/reviews/community/${communityId}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

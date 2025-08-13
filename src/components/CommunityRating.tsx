@@ -29,7 +29,7 @@ const CommunityRating: React.FC<CommunityRatingProps> = ({ communityId, compact 
         return;
       }
 
-      const response = await fetch(`http://localhost:3001/api/reviews/community/${communityId}/stats`);
+      const response = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/reviews/community/${communityId}/stats`);
       const data = await response.json();
       
       if (data.success) {

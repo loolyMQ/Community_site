@@ -77,21 +77,21 @@ const CommunityDetail: React.FC = () => {
         }
 
         // Загружаем данные сообщества
-        const communityResponse = await fetch(`http://localhost:3001/api/communities/${id}`);
+        const communityResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/communities/${id}`);
         if (communityResponse.ok) {
           const communityData = await communityResponse.json();
           setCommunity(communityData.data);
         }
 
         // Загружаем отзывы
-        const reviewsResponse = await fetch(`http://localhost:3001/api/reviews/community/${id}`);
+        const reviewsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/reviews/community/${id}`);
         if (reviewsResponse.ok) {
           const reviewsData = await reviewsResponse.json();
           setReviews(reviewsData.data || []);
         }
 
         // Загружаем статистику
-        const statsResponse = await fetch(`http://localhost:3001/api/reviews/community/${id}/stats`);
+        const statsResponse = await fetch(`${import.meta.env.VITE_API_URL || 'http://localhost:3001/api'}/reviews/community/${id}/stats`);
         if (statsResponse.ok) {
           const statsData = await statsResponse.json();
           setStats(statsData.data);
