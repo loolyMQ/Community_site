@@ -334,7 +334,21 @@ const CommunityGraph: React.FC = () => {
       const scaleRatio = distance / initialDistance;
       const newScale = Math.max(0.1, Math.min(5, initialScale * scaleRatio));
       
-      setScale(newScale);
+      // Плавное масштабирование с центром между пальцами
+      const centerX = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+      const centerY = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+      
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (rect) {
+        const worldX = (centerX - rect.left - offset.x) / scale;
+        const worldY = (centerY - rect.top - offset.y) / scale;
+        
+        setScale(newScale);
+        setOffset(prev => ({
+          x: centerX - worldX * newScale,
+          y: centerY - worldY * newScale
+        }));
+      }
     } else if (e.touches.length === 1 && isDragging) {
       // Одиночное касание - перетаскивание
       const touch = e.touches[0];
