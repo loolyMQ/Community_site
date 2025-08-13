@@ -687,6 +687,58 @@
   min-width: 280px;
 }
 
+/* Принудительно переопределяем для мобильных */
+@media (max-width: 768px) {
+  .app-header {
+    position: fixed !important;
+    top: 8px !important;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    z-index: 1000 !important;
+    background: var(--bg-color) !important;
+    backdrop-filter: blur(10px) !important;
+    -webkit-backdrop-filter: blur(10px) !important;
+    border: 1px solid var(--border-color) !important;
+    border-radius: 8px !important;
+    padding: 4px 8px !important;
+    min-height: 24px !important;
+    max-width: 160px !important;
+    width: auto !important;
+    min-width: auto !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 4px !important;
+  }
+  
+  .app-title {
+    font-size: 10px !important;
+    font-weight: 600 !important;
+    margin: 0 !important;
+    text-align: center !important;
+    flex: 1 !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
+    line-height: 1.2 !important;
+  }
+  
+  /* Очень маленькие экраны */
+  @media (max-width: 480px) {
+    .app-header {
+      top: 4px !important;
+      max-width: 120px !important;
+      padding: 2px 4px !important;
+      min-height: 18px !important;
+    }
+    
+    .app-title {
+      font-size: 8px !important;
+    }
+  }
+}
+
 .app-title {
   font-size: 20px;
   font-weight: 700;
