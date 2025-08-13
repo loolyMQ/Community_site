@@ -408,6 +408,32 @@ export const updateCommunity = async (req: Request, res: Response): Promise<void
       }
     }
 
+    // Обновляем категории, если они предоставлены
+    if (req.body.categoryIds && Array.isArray(req.body.categoryIds)) {
+      // Удаляем старые связи с категориями
+      await prisma.communityCategory.deleteMany({
+        where: { communityId: id }
+      });
+
+      // Создаем новые связи с категориями
+      if (req.body.categoryIds.length > 0) {
+        await prisma.communityCategory.createMany({
+          data: req.body.categoryIds.map((categoryId: string) => ({
+            communityId: id,
+            categoryId: categoryId
+          }))
+        });
+      }
+    }
+
+    // Обновляем основную категорию, если предоставлена
+    if (req.body.mainCategoryId) {
+      await prisma.community.update({
+        where: { id },
+        data: { mainCategoryId: req.body.mainCategoryId }
+      });
+    }
+
     const updatedCommunity = await prisma.community.update({
       where: { id },
       data: {
