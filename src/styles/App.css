@@ -2385,6 +2385,74 @@ tr:hover {
   border-radius: 4px !important;
 }
 
+/* Модальные окна в админ панели всегда в темной теме */
+[data-theme="light"] .admin-panel .modal-overlay {
+  background: rgba(0, 0, 0, 0.7) !important;
+}
+
+[data-theme="light"] .admin-panel .modal {
+  background: #1a1a1a !important;
+  border: 1px solid #333333 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .admin-panel .modal-header {
+  border-bottom: 1px solid #333333 !important;
+  background: #1a1a1a !important;
+}
+
+[data-theme="light"] .admin-panel .modal-title {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .admin-panel .modal-close {
+  color: #cccccc !important;
+}
+
+[data-theme="light"] .admin-panel .modal-close:hover {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .admin-panel .form-input,
+[data-theme="light"] .admin-panel .form-textarea,
+[data-theme="light"] .admin-panel .form-select {
+  background: #2a2a2a !important;
+  border: 1px solid #444444 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .admin-panel .form-input:focus,
+[data-theme="light"] .admin-panel .form-textarea:focus,
+[data-theme="light"] .admin-panel .form-select:focus {
+  border-color: #666666 !important;
+  background: #333333 !important;
+}
+
+[data-theme="light"] .admin-panel .form-label {
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .admin-panel .tab-button {
+  background: #2a2a2a !important;
+  border: 1px solid #444444 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .admin-panel .tab-button:hover {
+  background: #333333 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .admin-panel .tab-button.active {
+  background: #444444 !important;
+  color: #ffffff !important;
+  border-color: #666666 !important;
+}
+
+[data-theme="light"] .admin-panel .tab-button.active::after {
+  background: #666666 !important;
+}
+
 [data-theme="light"] .modal .button:hover {
   background: #d0d0d0 !important;
   border-color: #c0c0c0 !important;
@@ -2394,4 +2462,22 @@ tr:hover {
 [data-theme="light"] .modal .button:active {
   background: #c0c0c0 !important;
   color: #000000 !important;
+}
+
+/* Кнопки в модальных окнах админ панели */
+[data-theme="light"] .admin-panel .modal .button {
+  background: #333333 !important;
+  border: 1px solid #555555 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .admin-panel .modal .button:hover {
+  background: #444444 !important;
+  border-color: #666666 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .admin-panel .modal .button:active {
+  background: #555555 !important;
+  color: #ffffff !important;
 }
