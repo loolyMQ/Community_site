@@ -8,10 +8,9 @@
 
 ## Шаги настройки:
 
-### 1. Найдите URL вашего Railway backend
-1. Зайдите на [railway.app](https://railway.app)
-2. Найдите ваш проект
-3. Скопируйте URL (например: `https://your-app.railway.app`)
+### 1. URL вашего Railway backend
+Ваш Railway backend уже настроен и доступен по адресу:
+`https://communitysite-production.up.railway.app`
 
 ### 2. Настройте переменную на Vercel
 1. Зайдите на [vercel.com](https://vercel.com)
@@ -19,7 +18,7 @@
 3. Перейдите в Settings → Environment Variables
 4. Добавьте переменную:
    - **Name**: `VITE_API_URL`
-   - **Value**: `https://your-railway-app.railway.app/api`
+   - **Value**: `https://communitysite-production.up.railway.app/api`
    - **Environment**: Production, Preview, Development
 5. Нажмите "Save"
 6. Перезапустите деплой
