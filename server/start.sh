@@ -14,6 +14,10 @@ npx prisma migrate deploy
 echo "🔧 Generating Prisma Client..."
 npx prisma generate
 
+# Инициализируем базу данных (если нужно)
+echo "🌱 Initializing database with communities data..."
+npx ts-node scripts/init-database.ts
+
 # Запускаем сервер
 echo "🌐 Starting server..."
 npm start
