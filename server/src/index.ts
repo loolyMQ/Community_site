@@ -69,9 +69,19 @@ const authLimiter = rateLimit({
   legacyHeaders: false
 });
 
-// CORS настройки
+// CORS настройки - РАЗРЕШАЕМ ВСЕ ДОМЕНЫ VERCEL
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://127.0.0.1:5173'],
+  origin: (origin: string | undefined, callback: (err: Error | null, allow?: boolean) => void) => {
+    // Разрешаем все домены Vercel и localhost
+    if (!origin || 
+        origin.includes('vercel.app') || 
+        origin.includes('localhost') || 
+        origin.includes('127.0.0.1')) {
+      callback(null, true);
+    } else {
+      callback(null, true); // Временно разрешаем все
+    }
+  },
   credentials: true,
   optionsSuccessStatus: 200,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],

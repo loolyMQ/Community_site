@@ -8,7 +8,8 @@
     "dev": "nodemon src/index.ts",
     "build": "tsc",
     "test": "jest",
-    "seed:reviews": "ts-node scripts/seed-reviews.ts"
+    "seed:reviews": "ts-node scripts/seed-reviews.ts",
+    "seed:communities": "ts-node scripts/seed-communities.ts"
   },
   "keywords": [
     "community",
