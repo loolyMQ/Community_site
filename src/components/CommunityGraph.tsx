@@ -111,12 +111,6 @@ const CommunityGraph: React.FC = () => {
   const handleMouseDown = useCallback((e: React.MouseEvent) => {
     handlePointerDown(e as any);
   }, [handlePointerDown]);
-    } else {
-      setIsDragging(true);
-      setDragStart({ x: e.clientX, y: e.clientY });
-      setSelectedNode(null);
-    }
-  }, [offset, scale, graphData, positions, pinNode]);
 
   const handlePointerMove = useCallback((e: React.PointerEvent) => {
     e.preventDefault();
