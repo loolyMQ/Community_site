@@ -14,11 +14,6 @@ model User {
   name                  String
   role                  UserRole               @default(STUDENT)
   avatar                String?
-  phone                 String[]               @default([])
-  telegram              String[]               @default([])
-  vk                    String[]               @default([])
-  website               String[]               @default([])
-  other                 String[]               @default([])
   studentId             String?                @unique
   faculty               String?
   course                Int?
@@ -29,14 +24,17 @@ model User {
   lastLogin             DateTime?
   createdAt             DateTime               @default(now())
   updatedAt             DateTime               @updatedAt
-  
-  // 🏠 Поля для интеграции с home.mephi (заглушка)
-  homeMephiUserId       String?                @unique // ID пользователя в home.mephi
-  homeMephiFirstName    String?                // Имя из home.mephi
-  homeMephiLastName     String?                // Фамилия из home.mephi
-  homeMephiMiddleName   String?                // Отчество из home.mephi
-  homeMephiToken        String?                // Токен доступа к home.mephi
-  homeMephiTokenExpires DateTime?              // Срок действия токена
+  other                 String[]               @default([])
+  phone                 String[]               @default([])
+  telegram              String[]               @default([])
+  vk                    String[]               @default([])
+  website               String[]               @default([])
+  homeMephiFirstName    String?
+  homeMephiLastName     String?
+  homeMephiMiddleName   String?
+  homeMephiToken        String?
+  homeMephiTokenExpires DateTime?
+  homeMephiUserId       String?                @unique
   collaborationRequests CollaborationRequest[]
   communityLeaders      Community[]            @relation("CommunityLeaders")
   communityMembers      CommunityMember[]
@@ -50,21 +48,20 @@ model User {
 }
 
 model Community {
-  id                    String                 @id @default(cuid())
+  id                    String                  @id @default(cuid())
   name                  String
   description           String
   shortDescription      String?
   logo                  String?
   banner                String?
   categoryIds           String[]
-  mainCategoryId        String?
-  isOfficial            Boolean                @default(false)
-  isActive              Boolean                @default(true)
-  isVerified            Boolean                @default(false)
+  isOfficial            Boolean                 @default(false)
+  isActive              Boolean                 @default(true)
+  isVerified            Boolean                 @default(false)
   maxMembers            Int?
-  currentMembers        Int                    @default(0)
-  createdAt             DateTime               @default(now())
-  updatedAt             DateTime               @updatedAt
+  currentMembers        Int                     @default(0)
+  createdAt             DateTime                @default(now())
+  updatedAt             DateTime                @updatedAt
   email                 String?
   phone                 String?
   telegram              String?
@@ -75,17 +72,18 @@ model Community {
   requirements          String?
   achievements          String?
   leaderId              String
+  mainCategoryId        String?
   collaborationRequests CollaborationRequest[]
-  leader                User                   @relation("CommunityLeaders", fields: [leaderId], references: [id])
+  leader                User                    @relation("CommunityLeaders", fields: [leaderId], references: [id])
+  mainCategory          Category?               @relation("MainCategory", fields: [mainCategoryId], references: [id])
   activities            CommunityActivity[]
   categories            CommunityCategory[]
   members               CommunityMember[]
+  sourceRelationships   CommunityRelationship[] @relation("SourceCommunity")
+  targetRelationships   CommunityRelationship[] @relation("TargetCommunity")
   joinRequests          JoinRequest[]
   news                  News[]
   reviews               Review[]
-  sourceRelationships   CommunityRelationship[] @relation("SourceCommunity")
-  targetRelationships   CommunityRelationship[] @relation("TargetCommunity")
-  mainCategory          Category?              @relation("MainCategory", fields: [mainCategoryId], references: [id])
 
   @@map("communities")
 }
@@ -106,17 +104,17 @@ model CommunityMember {
 }
 
 model Category {
-  id          String              @id @default(cuid())
-  name        String              @unique
-  description String?
-  icon        String?
-  color       String?
-  isActive    Boolean             @default(true)
-  sortOrder   Int                 @default(0)
-  createdAt   DateTime            @default(now())
-  updatedAt   DateTime            @updatedAt
-  communities    CommunityCategory[]
-  mainCommunities Community[]        @relation("MainCategory")
+  id              String              @id @default(cuid())
+  name            String              @unique
+  description     String?
+  icon            String?
+  color           String?
+  isActive        Boolean             @default(true)
+  sortOrder       Int                 @default(0)
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+  mainCommunities Community[]         @relation("MainCategory")
+  communities     CommunityCategory[]
 
   @@map("categories")
 }
@@ -133,16 +131,16 @@ model CommunityCategory {
 }
 
 model CommunityRelationship {
-  id                    String    @id @default(cuid())
-  sourceCommunityId     String
-  targetCommunityId     String
-  relationshipType      String    @default("COLLABORATION")
-  description           String?
-  weight                Float     @default(1.0)
-  metadata              Json?
-  createdAt             DateTime  @default(now())
-  sourceCommunity       Community @relation("SourceCommunity", fields: [sourceCommunityId], references: [id], onDelete: Cascade)
-  targetCommunity       Community @relation("TargetCommunity", fields: [targetCommunityId], references: [id], onDelete: Cascade)
+  id                String    @id @default(cuid())
+  sourceCommunityId String
+  targetCommunityId String
+  relationshipType  String    @default("COLLABORATION")
+  description       String?
+  weight            Float     @default(1.0)
+  metadata          Json?
+  createdAt         DateTime  @default(now())
+  sourceCommunity   Community @relation("SourceCommunity", fields: [sourceCommunityId], references: [id], onDelete: Cascade)
+  targetCommunity   Community @relation("TargetCommunity", fields: [targetCommunityId], references: [id], onDelete: Cascade)
 
   @@unique([sourceCommunityId, targetCommunityId])
   @@map("community_relationships")
@@ -189,35 +187,32 @@ model CollaborationRequest {
 }
 
 model Review {
-  id           String    @id @default(cuid())
-  userId       String?
-  communityId  String
-  isAnonymous  Boolean   @default(false)
-  rating       Int
-  title        String?
-  content      String
-  isVerified   Boolean   @default(false)
-  isPublished  Boolean   @default(false)
-  isActive     Boolean   @default(true)
-  isArchived   Boolean   @default(false)
-  adminComment String?
-  moderatedBy  String?
-  moderatedAt  DateTime?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @updatedAt
-  
-  // 🏠 Поля для интеграции с home.mephi (заглушка)
-  homeMephiUserId    String?  // ID пользователя в home.mephi
-  homeMephiFirstName String?  // Имя из home.mephi (видно в админке даже для анонимных отзывов)
-  homeMephiLastName  String?  // Фамилия из home.mephi
-  homeMephiMiddleName String? // Отчество из home.mephi
-  homeMephiFaculty   String?  // Факультет из home.mephi
-  homeMephiCourse    Int?     // Курс из home.mephi
-  homeMephiGroup     String?  // Группа из home.mephi
-  homeMephiStudentId String?  // Студенческий билет из home.mephi
-  
-  community    Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
-  user         User?     @relation(fields: [userId], references: [id])
+  id                  String    @id @default(cuid())
+  userId              String?
+  communityId         String
+  isAnonymous         Boolean   @default(false)
+  rating              Int
+  title               String?
+  content             String
+  isVerified          Boolean   @default(false)
+  isPublished         Boolean   @default(false)
+  isActive            Boolean   @default(true)
+  adminComment        String?
+  moderatedBy         String?
+  moderatedAt         DateTime?
+  createdAt           DateTime  @default(now())
+  updatedAt           DateTime  @updatedAt
+  isArchived          Boolean   @default(false)
+  homeMephiCourse     Int?
+  homeMephiFaculty    String?
+  homeMephiFirstName  String?
+  homeMephiGroup      String?
+  homeMephiLastName   String?
+  homeMephiMiddleName String?
+  homeMephiStudentId  String?
+  homeMephiUserId     String?
+  community           Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  user                User?     @relation(fields: [userId], references: [id])
 
   @@unique([userId, communityId])
   @@map("reviews")
