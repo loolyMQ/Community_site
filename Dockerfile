@@ -14,14 +14,14 @@ RUN npm ci
 # Копируем исходный код server
 COPY server/ ./
 
+# Копируем CSV файл
+COPY ../communities_data.csv ./
+
 # Генерируем Prisma Client
 RUN npx prisma generate
 
 # Собираем приложение
 RUN npm run build
-
-# Копируем CSV файл
-COPY communities_data.csv ./
 
 # Удаляем devDependencies после сборки
 RUN npm prune --production
