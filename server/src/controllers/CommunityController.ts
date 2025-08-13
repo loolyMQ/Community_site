@@ -1,6 +1,8 @@
 import { Request, Response } from 'express';
-import { prisma } from '../config/database';
+import { PrismaClient } from '@prisma/client';
 import { validationResult } from 'express-validator';
+
+const prisma = new PrismaClient();
 
 // Функция для санитизации HTML
 const sanitizeHtml = (value: string): string => {
@@ -194,20 +196,25 @@ export const createCommunity = async (req: Request, res: Response): Promise<void
       }
     }
 
-    // Определяем тип контакта и сохраняем в соответствующее поле
-    let telegram = null;
-    let vk = null;
-    let website = null;
+    // Определяем тип контакта и сохраняем в соответствующие массивы
+    let telegram: string[] = [];
+    let vk: string[] = [];
+    let website: string[] = [];
+    let phone: string[] = [];
     
     if (sanitizedData.contacts?.social) {
-      const socialUrl = sanitizedData.contacts.social;
+      const socialUrl = sanitizeHtml(sanitizedData.contacts.social);
       if (socialUrl.includes('t.me') || socialUrl.includes('telegram')) {
-        telegram = socialUrl;
+        telegram = [socialUrl];
       } else if (socialUrl.includes('vk.com')) {
-        vk = socialUrl;
+        vk = [socialUrl];
       } else if (socialUrl.includes('http')) {
-        website = socialUrl;
+        website = [socialUrl];
       }
+    }
+
+    if (sanitizedData.contacts?.phone) {
+      phone = [sanitizeHtml(sanitizedData.contacts.phone)];
     }
 
     const community = await prisma.community.create({
@@ -219,7 +226,8 @@ export const createCommunity = async (req: Request, res: Response): Promise<void
         leaderId: leaderId,
         telegram: telegram,
         vk: vk,
-        website: website
+        website: website,
+        phone: phone
       },
       include: {
         categories: {
@@ -340,20 +348,25 @@ export const updateCommunity = async (req: Request, res: Response): Promise<void
       }
     }
 
-    // Определяем тип контакта и сохраняем в соответствующее поле
-    let telegram = null;
-    let vk = null;
-    let website = null;
+    // Определяем тип контакта и сохраняем в соответствующие массивы
+    let telegram: string[] = [];
+    let vk: string[] = [];
+    let website: string[] = [];
+    let phone: string[] = [];
     
     if (sanitizedData.contacts?.social) {
-      const socialUrl = sanitizedData.contacts.social;
+      const socialUrl = sanitizeHtml(sanitizedData.contacts.social);
       if (socialUrl.includes('t.me') || socialUrl.includes('telegram')) {
-        telegram = socialUrl;
+        telegram = [socialUrl];
       } else if (socialUrl.includes('vk.com')) {
-        vk = socialUrl;
+        vk = [socialUrl];
       } else if (socialUrl.includes('http')) {
-        website = socialUrl;
+        website = [socialUrl];
       }
+    }
+
+    if (sanitizedData.contacts?.phone) {
+      phone = [sanitizeHtml(sanitizedData.contacts.phone)];
     }
 
     // Обновляем лидера, если данные предоставлены
@@ -402,7 +415,8 @@ export const updateCommunity = async (req: Request, res: Response): Promise<void
         description: sanitizedData.description,
         telegram: telegram,
         vk: vk,
-        website: website
+        website: website,
+        phone: phone
       },
       include: {
         categories: {

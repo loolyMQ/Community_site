@@ -8,7 +8,11 @@ export interface Community {
   leader: {
     name: string;
     email: string;
-    phone?: string;
+    phone?: string[];
+    telegram?: string[];
+    vk?: string[];
+    website?: string[];
+    other?: string[];
     social?: string;
   };
   contacts: {
