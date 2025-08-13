@@ -111,17 +111,17 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
-    padding: 2px 4px;
-    min-height: 32px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    padding: 1px 2px;
+    min-height: 16px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 4px;
+    gap: 2px;
   }
   
   .app-title {
-    font-size: 10px;
+    font-size: 6px;
     font-weight: 600;
     margin: 0;
     text-align: center;
@@ -129,34 +129,34 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.2;
+    line-height: 1.1;
   }
   
   /* Миниатюрные кнопки переключения */
   .view-mode-switcher {
-    gap: 1px;
+    gap: 0px;
     margin: 0;
   }
   
   .view-mode-switcher .button {
-    padding: 2px 4px;
-    font-size: 8px;
-    min-height: 18px;
-    border-radius: 3px;
+    padding: 1px 2px;
+    font-size: 4px;
+    min-height: 8px;
+    border-radius: 2px;
     font-weight: 500;
   }
   
   /* Миниатюрные кнопки тем */
   .theme-switcher {
-    gap: 1px;
+    gap: 0px;
     margin: 0;
   }
   
   .theme-switcher .button {
-    padding: 2px 4px;
-    font-size: 8px;
-    min-height: 18px;
-    border-radius: 3px;
+    padding: 1px 2px;
+    font-size: 4px;
+    min-height: 8px;
+    border-radius: 2px;
     font-weight: 500;
   }
 
@@ -362,7 +362,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    padding-top: 35px; /* Отступ для заголовка */
+    padding-top: 18px; /* Отступ для заголовка */
   }
   
   .graph-container canvas {
@@ -1908,21 +1908,21 @@ tr:hover {
   }
   
   .control-panel {
-    top: 40px;
-    right: 2px;
-    padding: 3px;
-    min-width: 100px;
-    border-radius: 6px;
+    top: 20px;
+    right: 1px;
+    padding: 1px;
+    min-width: 50px;
+    border-radius: 3px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
   }
   
   .control-panel .button {
-    padding: 2px 4px;
-    font-size: 8px;
-    margin-bottom: 2px;
-    border-radius: 3px;
-    min-height: 16px;
+    padding: 1px 2px;
+    font-size: 4px;
+    margin-bottom: 1px;
+    border-radius: 2px;
+    min-height: 6px;
     font-weight: 500;
   }
   
@@ -1938,40 +1938,40 @@ tr:hover {
   }
   
   .info-panel {
-    bottom: 4px;
-    left: 2px;
-    padding: 3px;
-    max-width: 140px;
-    border-radius: 4px;
+    bottom: 2px;
+    left: 1px;
+    padding: 1px;
+    max-width: 70px;
+    border-radius: 2px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    font-size: 8px;
-    max-height: 80px;
+    font-size: 4px;
+    max-height: 40px;
     overflow-y: auto;
   }
   
   .info-panel h3 {
-    font-size: 9px;
-    margin-bottom: 2px;
+    font-size: 5px;
+    margin-bottom: 1px;
     font-weight: 600;
   }
   
   .info-text {
-    font-size: 7px;
-    line-height: 1.1;
+    font-size: 3px;
+    line-height: 1.0;
   }
   
   .community-list {
-    padding: 40px 6px 60px 6px;
+    padding: 20px 6px 60px 6px;
   }
   
   @media (max-width: 480px) {
     .graph-container {
-      padding-top: 30px;
+      padding-top: 13px;
     }
     
     .community-list {
-      padding: 35px 4px 60px 4px;
+      padding: 15px 4px 60px 4px;
     }
   }
   
@@ -2065,51 +2065,51 @@ tr:hover {
 }
 
 /* Очень маленькие экраны */
-@media (max-width: 480px) {
-  .app-header {
-    padding: 1px 3px;
-    min-height: 28px;
-  }
-  
-  .app-title {
-    font-size: 9px;
-  }
-  
-  .view-mode-switcher .button,
-  .theme-switcher .button {
-    padding: 1px 3px;
-    font-size: 7px;
-    min-height: 16px;
-  }
-  
-  .control-panel {
-    top: 35px;
-    right: 1px;
-    padding: 2px;
-    min-width: 90px;
-  }
-  
-  .control-panel .button {
-    padding: 1px 3px;
-    font-size: 7px;
-    min-height: 14px;
-  }
-  
-  .info-panel {
-    bottom: 2px;
-    left: 1px;
-    padding: 2px;
-    max-width: 120px;
-    max-height: 60px;
-  }
-  
-  .info-panel h3 {
-    font-size: 8px;
-  }
-  
-  .info-text {
-    font-size: 6px;
-  }
+  @media (max-width: 480px) {
+    .app-header {
+      padding: 0px 1px;
+      min-height: 12px;
+    }
+    
+    .app-title {
+      font-size: 4px;
+    }
+    
+    .view-mode-switcher .button,
+    .theme-switcher .button {
+      padding: 0px 1px;
+      font-size: 3px;
+      min-height: 6px;
+    }
+    
+    .control-panel {
+      top: 15px;
+      right: 0px;
+      padding: 0px;
+      min-width: 40px;
+    }
+    
+    .control-panel .button {
+      padding: 0px 1px;
+      font-size: 3px;
+      min-height: 4px;
+    }
+    
+    .info-panel {
+      bottom: 1px;
+      left: 0px;
+      padding: 0px;
+      max-width: 50px;
+      max-height: 20px;
+    }
+    
+    .info-panel h3 {
+      font-size: 3px;
+    }
+    
+    .info-text {
+      font-size: 2px;
+    }
   
   .admin-btn {
     bottom: 6px;
