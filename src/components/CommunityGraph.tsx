@@ -252,6 +252,9 @@ const CommunityGraph: React.FC = () => {
   const [initialScale, setInitialScale] = useState<number>(1);
 
   const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (e.touches.length === 2) {
       // Два пальца - начало жеста масштабирования
       const distance = Math.sqrt(
@@ -260,13 +263,36 @@ const CommunityGraph: React.FC = () => {
       );
       setInitialDistance(distance);
       setInitialScale(scale);
+    } else if (e.touches.length === 1) {
+      // Одиночное касание - начало перетаскивания
+      const touch = e.touches[0];
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (!rect) return;
+
+      const x = (touch.clientX - rect.left - offset.x) / scale;
+      const y = (touch.clientY - rect.top - offset.y) / scale;
+
+      const clickedNode = findNodeAtPosition(x, y);
+      if (clickedNode) {
+        setSelectedNode(clickedNode.id);
+        pinNode(clickedNode.id);
+        setIsDragging(true);
+        setDragStart({ x: touch.clientX, y: touch.clientY });
+        setWasNodeDragged(false);
+      } else {
+        setIsDragging(true);
+        setDragStart({ x: touch.clientX, y: touch.clientY });
+        setDragDistance(0);
+      }
     }
-  }, [scale]);
+  }, [scale, offset, pinNode, findNodeAtPosition]);
 
   const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    
     if (e.touches.length === 2 && initialDistance !== null) {
-      e.preventDefault();
-      
+      // Два пальца - масштабирование
       const distance = Math.sqrt(
         Math.pow(e.touches[0].clientX - e.touches[1].clientX, 2) +
         Math.pow(e.touches[0].clientY - e.touches[1].clientY, 2)
@@ -276,12 +302,55 @@ const CommunityGraph: React.FC = () => {
       const newScale = Math.max(0.1, Math.min(5, initialScale * scaleRatio));
       
       setScale(newScale);
+    } else if (e.touches.length === 1 && isDragging) {
+      // Одиночное касание - перетаскивание
+      const touch = e.touches[0];
+      const deltaX = touch.clientX - dragStart.x;
+      const deltaY = touch.clientY - dragStart.y;
+      
+      if (selectedNode) {
+        // Перетаскивание узла
+        const rect = canvasRef.current?.getBoundingClientRect();
+        if (!rect) return;
+        
+        const x = (touch.clientX - rect.left - offset.x) / scale;
+        const y = (touch.clientY - rect.top - offset.y) / scale;
+        
+        setNodePosition(selectedNode, x, y);
+        setWasNodeDragged(true);
+      } else {
+        // Перетаскивание камеры
+        setOffset(prev => ({
+          x: prev.x + deltaX,
+          y: prev.y + deltaY
+        }));
+      }
+      
+      setDragStart({ x: touch.clientX, y: touch.clientY });
+      setDragDistance(prev => prev + Math.sqrt(deltaX * deltaX + deltaY * deltaY));
     }
-  }, [initialDistance, initialScale]);
+  }, [initialDistance, initialScale, isDragging, selectedNode, dragStart, offset, scale, setNodePosition]);
 
   const handleTouchEnd = useCallback(() => {
+    // Если это был клик (не перетаскивание)
+    if (!isDragging || dragDistance <= 20 && !wasNodeDragged) {
+      // Обработка клика по узлу
+      if (selectedNode) {
+        const community = communities.find(c => c.id === selectedNode);
+        if (community) {
+          setSelectedCommunity(community);
+          setShowCommunityModal(true);
+        }
+      }
+    }
+    
+    // Сброс состояний
     setInitialDistance(null);
-  }, []);
+    setIsDragging(false);
+    setSelectedNode(null);
+    setDragDistance(0);
+    setWasNodeDragged(false);
+  }, [isDragging, dragDistance, wasNodeDragged, selectedNode, communities]);
 
   // Поиск узла по позиции - оптимизированный
   const findNodeAtPosition = useCallback((x: number, y: number): GraphNode | null => {
