@@ -31,7 +31,7 @@ const sanitizeCommunityData = (data: any) => {
 };
 
 // Получение всех сообществ
-export const getAllCommunities = async (req: Request, res: Response): Promise<void> => {
+export const getAllCommunities = async (_req: Request, res: Response): Promise<void> => {
   try {
     const communities = await prisma.community.findMany({
       where: { isActive: true },
@@ -494,7 +494,7 @@ export const deleteCommunity = async (req: Request, res: Response): Promise<void
 };
 
 // Получение статистики для админ панели
-export const getAdminStats = async (req: Request, res: Response): Promise<void> => {
+export const getAdminStats = async (_req: Request, res: Response): Promise<void> => {
   try {
     const totalCommunities = await prisma.community.count({
       where: { isActive: true }
@@ -533,7 +533,7 @@ export const getAdminStats = async (req: Request, res: Response): Promise<void> 
 }; 
 
 // Получение всех категорий
-export const getAllCategories = async (req: Request, res: Response): Promise<void> => {
+export const getAllCategories = async (_req: Request, res: Response): Promise<void> => {
   try {
     const categories = await prisma.category.findMany({
       where: { isActive: true },
@@ -543,7 +543,7 @@ export const getAllCategories = async (req: Request, res: Response): Promise<voi
       ]
     });
 
-    const categoriesWithCount = categories.map(category => ({
+    const categoriesWithCount = categories.map((category: any) => ({
       ...category,
       communityCount: 0 // Placeholder, можно добавить подсчет позже
     }));
@@ -562,7 +562,7 @@ export const getAllCategories = async (req: Request, res: Response): Promise<voi
 };
 
 // Получение связей между сообществами
-export const getCommunityRelationships = async (req: Request, res: Response): Promise<void> => {
+export const getCommunityRelationships = async (_req: Request, res: Response): Promise<void> => {
   try {
     const relationships = await prisma.communityRelationship.findMany({
       where: {

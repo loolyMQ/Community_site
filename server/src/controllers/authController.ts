@@ -101,7 +101,7 @@ const checkAdminCredentials = async (email: string, password: string): Promise<b
     return await bcrypt.compare(password, adminHash);
   }
 
-  if (email === moderatorEmail && moderatorHash) {
+  if (email === _moderatorEmail && moderatorHash) {
     return await bcrypt.compare(password, moderatorHash);
   }
 
@@ -234,7 +234,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     if (isAdminLogin) {
       // Определяем роль
       const adminEmail = process.env['ADMIN_EMAIL'];
-      const moderatorEmail = process.env['MODERATOR_EMAIL'];
+      const _moderatorEmail = process.env['MODERATOR_EMAIL'];
       const role = email === adminEmail ? 'ADMIN' : 'MODERATOR';
       const name = email === adminEmail ? 'Администратор Системы' : 'Модератор Студсовета';
 
