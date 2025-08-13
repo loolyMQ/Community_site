@@ -247,6 +247,39 @@ const CommunityGraph: React.FC = () => {
     setOffset(newOffset);
   }, [scale, offset]);
 
+  // Поиск узла по позиции - оптимизированный (перемещено выше для правильной инициализации)
+  const findNodeAtPosition = useCallback((x: number, y: number): GraphNode | null => {
+    // Проверяем только узлы в видимой области для оптимизации
+    const visibleNodes = graphData.nodes.filter(node => {
+      const pos = positions.get(node.id);
+      if (!pos) return false;
+      
+      // Быстрая проверка границ
+      const nodeX = pos.x * scale + offset.x;
+      const nodeY = pos.y * scale + offset.y;
+      const maxSize = node.size * scale * 3;
+      
+      return nodeX >= -maxSize && nodeX <= window.innerWidth + maxSize &&
+             nodeY >= -maxSize && nodeY <= window.innerHeight + maxSize;
+    });
+
+    // Проверяем только видимые узлы
+    for (let i = visibleNodes.length - 1; i >= 0; i--) {
+      const node = visibleNodes[i];
+      const pos = positions.get(node.id);
+      if (!pos) continue;
+
+      const distance = Math.sqrt(
+        Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2)
+      );
+
+      if (distance <= node.size * 2.5) {
+        return node;
+      }
+    }
+    return null;
+  }, [graphData.nodes, positions, scale, offset]);
+
   // Обработка жестов масштабирования для мобильных устройств
   const [initialDistance, setInitialDistance] = useState<number | null>(null);
   const [initialScale, setInitialScale] = useState<number>(1);
@@ -350,40 +383,9 @@ const CommunityGraph: React.FC = () => {
     setSelectedNode(null);
     setDragDistance(0);
     setWasNodeDragged(false);
-  }, [isDragging, dragDistance, wasNodeDragged, selectedNode, communities]);
+  }, [isDragging, dragDistance, wasNodeDragged, selectedNode, communities, setSelectedCommunity, setShowCommunityModal]);
 
-  // Поиск узла по позиции - оптимизированный
-  const findNodeAtPosition = useCallback((x: number, y: number): GraphNode | null => {
-    // Проверяем только узлы в видимой области для оптимизации
-    const visibleNodes = graphData.nodes.filter(node => {
-      const pos = positions.get(node.id);
-      if (!pos) return false;
-      
-      // Быстрая проверка границ
-      const nodeX = pos.x * scale + offset.x;
-      const nodeY = pos.y * scale + offset.y;
-      const maxSize = node.size * scale * 3;
-      
-      return nodeX >= -maxSize && nodeX <= window.innerWidth + maxSize &&
-             nodeY >= -maxSize && nodeY <= window.innerHeight + maxSize;
-    });
 
-    // Проверяем только видимые узлы
-    for (let i = visibleNodes.length - 1; i >= 0; i--) {
-      const node = visibleNodes[i];
-      const pos = positions.get(node.id);
-      if (!pos) continue;
-
-      const distance = Math.sqrt(
-        Math.pow(x - pos.x, 2) + Math.pow(y - pos.y, 2)
-      );
-
-      if (distance <= node.size * 2.5) {
-        return node;
-      }
-    }
-    return null;
-  }, [graphData.nodes, positions, scale, offset]);
 
   // Рендеринг графа
   const renderGraph = useCallback(() => {
