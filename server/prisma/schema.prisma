@@ -1,0 +1,345 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                    String                 @id @default(cuid())
+  email                 String?                @unique
+  password              String
+  name                  String
+  role                  UserRole               @default(STUDENT)
+  avatar                String?
+  phone                 String[]               @default([])
+  telegram              String[]               @default([])
+  vk                    String[]               @default([])
+  website               String[]               @default([])
+  other                 String[]               @default([])
+  studentId             String?                @unique
+  faculty               String?
+  course                Int?
+  group                 String?
+  bio                   String?
+  isActive              Boolean                @default(true)
+  isVerified            Boolean                @default(false)
+  lastLogin             DateTime?
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  
+  // 🏠 Поля для интеграции с home.mephi (заглушка)
+  homeMephiUserId       String?                @unique // ID пользователя в home.mephi
+  homeMephiFirstName    String?                // Имя из home.mephi
+  homeMephiLastName     String?                // Фамилия из home.mephi
+  homeMephiMiddleName   String?                // Отчество из home.mephi
+  homeMephiToken        String?                // Токен доступа к home.mephi
+  homeMephiTokenExpires DateTime?              // Срок действия токена
+  collaborationRequests CollaborationRequest[]
+  communityLeaders      Community[]            @relation("CommunityLeaders")
+  communityMembers      CommunityMember[]
+  joinRequests          JoinRequest[]
+  news                  News[]
+  notifications         Notification[]
+  reviews               Review[]
+  activities            UserActivity[]
+
+  @@map("users")
+}
+
+model Community {
+  id                    String                 @id @default(cuid())
+  name                  String
+  description           String
+  shortDescription      String?
+  logo                  String?
+  banner                String?
+  categoryIds           String[]
+  mainCategoryId        String?
+  isOfficial            Boolean                @default(false)
+  isActive              Boolean                @default(true)
+  isVerified            Boolean                @default(false)
+  maxMembers            Int?
+  currentMembers        Int                    @default(0)
+  createdAt             DateTime               @default(now())
+  updatedAt             DateTime               @updatedAt
+  email                 String?
+  phone                 String?
+  telegram              String?
+  vk                    String?
+  website               String?
+  location              String?
+  meetingSchedule       String?
+  requirements          String?
+  achievements          String?
+  leaderId              String
+  collaborationRequests CollaborationRequest[]
+  leader                User                   @relation("CommunityLeaders", fields: [leaderId], references: [id])
+  activities            CommunityActivity[]
+  categories            CommunityCategory[]
+  members               CommunityMember[]
+  joinRequests          JoinRequest[]
+  news                  News[]
+  reviews               Review[]
+  sourceRelationships   CommunityRelationship[] @relation("SourceCommunity")
+  targetRelationships   CommunityRelationship[] @relation("TargetCommunity")
+  mainCategory          Category?              @relation("MainCategory", fields: [mainCategoryId], references: [id])
+
+  @@map("communities")
+}
+
+model CommunityMember {
+  id          String     @id @default(cuid())
+  userId      String
+  communityId String
+  role        MemberRole @default(MEMBER)
+  joinedAt    DateTime   @default(now())
+  isActive    Boolean    @default(true)
+  permissions String[]
+  community   Community  @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  user        User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, communityId])
+  @@map("community_members")
+}
+
+model Category {
+  id          String              @id @default(cuid())
+  name        String              @unique
+  description String?
+  icon        String?
+  color       String?
+  isActive    Boolean             @default(true)
+  sortOrder   Int                 @default(0)
+  createdAt   DateTime            @default(now())
+  updatedAt   DateTime            @updatedAt
+  communities    CommunityCategory[]
+  mainCommunities Community[]        @relation("MainCategory")
+
+  @@map("categories")
+}
+
+model CommunityCategory {
+  id          String    @id @default(cuid())
+  communityId String
+  categoryId  String
+  category    Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@unique([communityId, categoryId])
+  @@map("community_categories")
+}
+
+model CommunityRelationship {
+  id                    String    @id @default(cuid())
+  sourceCommunityId     String
+  targetCommunityId     String
+  relationshipType      String    @default("COLLABORATION")
+  description           String?
+  weight                Float     @default(1.0)
+  metadata              Json?
+  createdAt             DateTime  @default(now())
+  sourceCommunity       Community @relation("SourceCommunity", fields: [sourceCommunityId], references: [id], onDelete: Cascade)
+  targetCommunity       Community @relation("TargetCommunity", fields: [targetCommunityId], references: [id], onDelete: Cascade)
+
+  @@unique([sourceCommunityId, targetCommunityId])
+  @@map("community_relationships")
+}
+
+model JoinRequest {
+  id           String        @id @default(cuid())
+  userId       String
+  communityId  String
+  name         String
+  contact      String
+  comment      String?
+  status       RequestStatus @default(PENDING)
+  adminComment String?
+  isArchived   Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  processedAt  DateTime?
+  processedBy  String?
+  community    Community     @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("join_requests")
+}
+
+model CollaborationRequest {
+  id           String        @id @default(cuid())
+  userId       String
+  communityId  String
+  name         String
+  contact      String
+  comment      String?
+  status       RequestStatus @default(PENDING)
+  adminComment String?
+  isArchived   Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  processedAt  DateTime?
+  processedBy  String?
+  community    Community     @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  user         User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("collaboration_requests")
+}
+
+model Review {
+  id           String    @id @default(cuid())
+  userId       String?
+  communityId  String
+  isAnonymous  Boolean   @default(false)
+  rating       Int
+  title        String?
+  content      String
+  isVerified   Boolean   @default(false)
+  isPublished  Boolean   @default(false)
+  isActive     Boolean   @default(true)
+  isArchived   Boolean   @default(false)
+  adminComment String?
+  moderatedBy  String?
+  moderatedAt  DateTime?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  
+  // 🏠 Поля для интеграции с home.mephi (заглушка)
+  homeMephiUserId    String?  // ID пользователя в home.mephi
+  homeMephiFirstName String?  // Имя из home.mephi (видно в админке даже для анонимных отзывов)
+  homeMephiLastName  String?  // Фамилия из home.mephi
+  homeMephiMiddleName String? // Отчество из home.mephi
+  homeMephiFaculty   String?  // Факультет из home.mephi
+  homeMephiCourse    Int?     // Курс из home.mephi
+  homeMephiGroup     String?  // Группа из home.mephi
+  homeMephiStudentId String?  // Студенческий билет из home.mephi
+  
+  community    Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  user         User?     @relation(fields: [userId], references: [id])
+
+  @@unique([userId, communityId])
+  @@map("reviews")
+}
+
+model News {
+  id          String    @id @default(cuid())
+  communityId String
+  authorId    String
+  title       String
+  content     String
+  image       String?
+  isPublished Boolean   @default(false)
+  isPinned    Boolean   @default(false)
+  views       Int       @default(0)
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  publishedAt DateTime?
+  author      User      @relation(fields: [authorId], references: [id])
+  community   Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@map("news")
+}
+
+model Notification {
+  id        String           @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  data      Json?
+  isRead    Boolean          @default(false)
+  createdAt DateTime         @default(now())
+  user      User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+model UserActivity {
+  id        String       @id @default(cuid())
+  userId    String
+  type      ActivityType
+  data      Json?
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime     @default(now())
+  user      User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_activities")
+}
+
+model CommunityActivity {
+  id          String       @id @default(cuid())
+  communityId String
+  type        ActivityType
+  data        Json?
+  createdAt   DateTime     @default(now())
+  community   Community    @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@map("community_activities")
+}
+
+model SystemStats {
+  id                           String   @id @default(cuid())
+  date                         DateTime @default(now())
+  totalUsers                   Int
+  activeUsers                  Int
+  totalCommunities             Int
+  activeCommunities            Int
+  totalJoinRequests            Int
+  pendingJoinRequests          Int
+  totalCollaborationRequests   Int
+  pendingCollaborationRequests Int
+  totalReviews                 Int
+  averageRating                Float
+  createdAt                    DateTime @default(now())
+
+  @@map("system_stats")
+}
+
+enum UserRole {
+  STUDENT
+  ADMIN
+  MODERATOR
+  LEADER
+}
+
+enum MemberRole {
+  MEMBER
+  MODERATOR
+  LEADER
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum NotificationType {
+  JOIN_REQUEST
+  COLLABORATION_REQUEST
+  REQUEST_APPROVED
+  REQUEST_REJECTED
+  NEW_MEMBER
+  NEW_NEWS
+  NEW_REVIEW
+  SYSTEM
+}
+
+enum ActivityType {
+  LOGIN
+  LOGOUT
+  JOIN_COMMUNITY
+  LEAVE_COMMUNITY
+  CREATE_COMMUNITY
+  UPDATE_COMMUNITY
+  SUBMIT_REQUEST
+  APPROVE_REQUEST
+  REJECT_REQUEST
+  ADD_REVIEW
+  ADD_NEWS
+  VIEW_COMMUNITY
+  SEARCH
+}

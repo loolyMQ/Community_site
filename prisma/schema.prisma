@@ -1,0 +1,348 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Пользователи системы
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      UserRole @default(STUDENT)
+  avatar    String?
+  phone     String?
+  telegram  String?
+  vk        String?
+  studentId String?  @unique // Студенческий билет
+  faculty   String?  // Факультет
+  course    Int?     // Курс
+  group     String?  // Группа
+  bio       String?  @db.Text
+  isActive  Boolean  @default(true)
+  isVerified Boolean @default(false)
+  lastLogin DateTime?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Отношения
+  joinRequests      JoinRequest[]
+  collaborationRequests CollaborationRequest[]
+  reviews           Review[]
+  news              News[]
+  communityMembers  CommunityMember[]
+  communityLeaders  Community[] @relation("CommunityLeaders")
+  notifications     Notification[]
+  activities        UserActivity[]
+
+  @@map("users")
+}
+
+// Сообщества
+model Community {
+  id          String   @id @default(cuid())
+  name        String
+  description String   @db.Text
+  shortDescription String?
+  logo        String?
+  banner      String?
+  categoryIds String[] // JSON массив ID категорий
+  isOfficial  Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  isVerified  Boolean  @default(false)
+  maxMembers  Int?     // Максимальное количество участников
+  currentMembers Int   @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Контакты
+  email      String?
+  phone      String?
+  telegram   String?
+  vk         String?
+  website    String?
+  location   String?   // Место встреч
+
+  // Дополнительная информация
+  meetingSchedule String? @db.Text // Расписание встреч
+  requirements    String? @db.Text // Требования к участникам
+  achievements    String? @db.Text // Достижения сообщества
+
+  // Отношения
+  leaderId   String
+  leader     User     @relation("CommunityLeaders", fields: [leaderId], references: [id])
+  members    CommunityMember[]
+  joinRequests JoinRequest[]
+  collaborationRequests CollaborationRequest[]
+  reviews    Review[]
+  news       News[]
+  categories CommunityCategory[]
+  activities CommunityActivity[]
+
+  @@map("communities")
+}
+
+// Участники сообществ
+model CommunityMember {
+  id          String   @id @default(cuid())
+  userId      String
+  communityId String
+  role        MemberRole @default(MEMBER)
+  joinedAt    DateTime @default(now())
+  isActive    Boolean  @default(true)
+  permissions String[] // JSON массив разрешений
+
+  // Отношения
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, communityId])
+  @@map("community_members")
+}
+
+// Категории сообществ
+model Category {
+  id          String   @id @default(cuid())
+  name        String   @unique
+  description String?
+  icon        String?
+  color       String?
+  isActive    Boolean  @default(true)
+  sortOrder   Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Отношения
+  communities CommunityCategory[]
+
+  @@map("categories")
+}
+
+// Связь сообществ с категориями
+model CommunityCategory {
+  id          String   @id @default(cuid())
+  communityId String
+  categoryId  String
+
+  // Отношения
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  category  Category  @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+
+  @@unique([communityId, categoryId])
+  @@map("community_categories")
+}
+
+// Заявки на вступление
+model JoinRequest {
+  id          String   @id @default(cuid())
+  userId      String
+  communityId String
+  name        String
+  contact     String
+  comment     String?
+  status      RequestStatus @default(PENDING)
+  adminComment String?
+  isArchived  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  processedAt DateTime?
+  processedBy String?
+
+  // Отношения
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@map("join_requests")
+}
+
+// Заявки на сотрудничество
+model CollaborationRequest {
+  id          String   @id @default(cuid())
+  userId      String
+  communityId String
+  name        String
+  contact     String
+  comment     String?
+  status      RequestStatus @default(PENDING)
+  adminComment String?
+  isArchived  Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  processedAt DateTime?
+  processedBy String?
+
+  // Отношения
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@map("collaboration_requests")
+}
+
+// Отзывы о сообществах
+model Review {
+  id          String   @id @default(cuid())
+  userId      String?
+  communityId String
+  isAnonymous Boolean  @default(false)
+  rating      Int      // 1-5 звезд
+  title       String?
+  content     String   @db.Text
+  isVerified  Boolean  @default(false)
+  isPublished Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  adminComment String?
+  moderatedBy String?
+  moderatedAt DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Отношения
+  user      User?     @relation(fields: [userId], references: [id], onDelete: SetNull)
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, communityId])
+  @@map("reviews")
+}
+
+// Новости сообществ
+model News {
+  id          String   @id @default(cuid())
+  communityId String
+  authorId    String
+  title       String
+  content     String   @db.Text
+  image       String?
+  isPublished Boolean  @default(false)
+  isPinned    Boolean  @default(false)
+  views       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  publishedAt DateTime?
+
+  // Отношения
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+  author     User     @relation(fields: [authorId], references: [id])
+
+  @@map("news")
+}
+
+// Уведомления
+model Notification {
+  id        String   @id @default(cuid())
+  userId    String
+  type      NotificationType
+  title     String
+  message   String
+  data      Json?    // Дополнительные данные
+  isRead    Boolean  @default(false)
+  createdAt DateTime @default(now())
+
+  // Отношения
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("notifications")
+}
+
+// Активность пользователей
+model UserActivity {
+  id        String   @id @default(cuid())
+  userId    String
+  type      ActivityType
+  data      Json?    // Дополнительные данные
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+
+  // Отношения
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("user_activities")
+}
+
+// Активность сообществ
+model CommunityActivity {
+  id          String   @id @default(cuid())
+  communityId String
+  type        ActivityType
+  data        Json?    // Дополнительные данные
+  createdAt   DateTime @default(now())
+
+  // Отношения
+  community Community @relation(fields: [communityId], references: [id], onDelete: Cascade)
+
+  @@map("community_activities")
+}
+
+// Статистика системы
+model SystemStats {
+  id        String   @id @default(cuid())
+  date      DateTime @default(now())
+  totalUsers Int
+  activeUsers Int
+  totalCommunities Int
+  activeCommunities Int
+  totalJoinRequests Int
+  pendingJoinRequests Int
+  totalCollaborationRequests Int
+  pendingCollaborationRequests Int
+  totalReviews Int
+  averageRating Float
+  createdAt DateTime @default(now())
+
+  @@map("system_stats")
+}
+
+// Enums
+enum UserRole {
+  STUDENT
+  ADMIN
+  MODERATOR
+  LEADER
+}
+
+enum MemberRole {
+  MEMBER
+  MODERATOR
+  LEADER
+}
+
+enum RequestStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum NotificationType {
+  JOIN_REQUEST
+  COLLABORATION_REQUEST
+  REQUEST_APPROVED
+  REQUEST_REJECTED
+  NEW_MEMBER
+  NEW_NEWS
+  NEW_REVIEW
+  SYSTEM
+}
+
+enum ActivityType {
+  LOGIN
+  LOGOUT
+  JOIN_COMMUNITY
+  LEAVE_COMMUNITY
+  CREATE_COMMUNITY
+  UPDATE_COMMUNITY
+  SUBMIT_REQUEST
+  APPROVE_REQUEST
+  REJECT_REQUEST
+  ADD_REVIEW
+  ADD_NEWS
+  VIEW_COMMUNITY
+  SEARCH
+}

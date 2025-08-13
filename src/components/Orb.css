@@ -1,0 +1,42 @@
+.orb-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 80vw;
+  height: 80vh;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+.orb-container canvas {
+  pointer-events: none;
+}
+
+.orb-container canvas {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Адаптивность для больших экранов */
+@media (min-width: 1200px) {
+  .orb-container {
+    width: 90vw;
+    height: 90vh;
+  }
+}
+
+@media (min-width: 1600px) {
+  .orb-container {
+    width: 95vw;
+    height: 95vh;
+  }
+}
+
+@media (min-width: 2000px) {
+  .orb-container {
+    width: 98vw;
+    height: 98vh;
+  }
+} 
