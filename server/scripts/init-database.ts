@@ -10,14 +10,31 @@ async function initDatabase() {
 
     // 1. Запускаем миграции
     console.log('📊 Запускаем миграции Prisma...');
-    const { execSync } = require('child_process');
-    execSync('npx prisma migrate deploy', { stdio: 'inherit' });
+    try {
+      const { execSync } = require('child_process');
+      execSync('npx prisma migrate deploy', { stdio: 'inherit' });
+    } catch (error) {
+      console.log('⚠️ Миграции уже применены или ошибка:', error.message);
+    }
 
     // 2. Генерируем Prisma Client
     console.log('🔧 Генерируем Prisma Client...');
-    execSync('npx prisma generate', { stdio: 'inherit' });
+    try {
+      const { execSync } = require('child_process');
+      execSync('npx prisma generate', { stdio: 'inherit' });
+    } catch (error) {
+      console.log('⚠️ Prisma Client уже сгенерирован или ошибка:', error.message);
+    }
 
     // 3. Загружаем данные о сообществах
+    // Проверяем, есть ли уже данные
+    console.log('🔍 Проверяем существующие данные...');
+    const existingCommunities = await prisma.community.count();
+    if (existingCommunities > 0) {
+      console.log(`✅ В базе уже есть ${existingCommunities} сообществ. Пропускаем загрузку.`);
+      return;
+    }
+
     console.log('🌱 Загружаем данные о сообществах...');
     
     // Читаем CSV файл
