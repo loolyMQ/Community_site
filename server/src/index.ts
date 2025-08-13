@@ -92,7 +92,7 @@ app.use('/api/reviews', reviewRoutes);
 app.use('/api/requests', requestRoutes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
+app.get('/health', (_req, res) => {
   res.json({ 
     status: 'OK', 
     timestamp: new Date().toISOString(),
@@ -101,7 +101,7 @@ app.get('/health', (req, res) => {
 });
 
 // Обработка ошибок
-app.use((err: any, req: express.Request, res: express.Response, next: express.NextFunction) => {
+app.use((err: any, _req: express.Request, res: express.Response, _next: express.NextFunction) => {
   console.error('❌ Server error:', err);
   res.status(500).json({
     success: false,
@@ -110,7 +110,7 @@ app.use((err: any, req: express.Request, res: express.Response, next: express.Ne
 });
 
 // 404 handler
-app.use('*', (req, res) => {
+app.use('*', (_req, res) => {
   res.status(404).json({
     success: false,
     message: 'Маршрут не найден'

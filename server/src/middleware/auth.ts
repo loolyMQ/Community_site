@@ -216,7 +216,8 @@ export const requireOwnerOrAdmin = (resourceUserIdField: string = 'userId') => {
 // Middleware для логирования запросов
 export const logRequest = (req: Request, res: Response, next: NextFunction): void => {
   const start = Date.now();
-  const { method, url, ip, userAgent } = req;
+  const { method, url, ip } = req;
+  const userAgent = req.headers['user-agent'];
   
   // Логируем запрос
   console.log(`API Request:`, {

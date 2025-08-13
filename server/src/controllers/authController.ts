@@ -23,7 +23,7 @@ const generateTokens = (user: { id: string; email: string; role: string }) => {
       role: user.role,
       iat: Math.floor(Date.now() / 1000)
     },
-    jwtSecret,
+    jwtSecret as string,
     { expiresIn: process.env['JWT_EXPIRES_IN'] || '15m' }
   );
 
@@ -33,7 +33,7 @@ const generateTokens = (user: { id: string; email: string; role: string }) => {
       email: user.email,
       iat: Math.floor(Date.now() / 1000)
     },
-    jwtRefreshSecret,
+    jwtRefreshSecret as string,
     { expiresIn: process.env['JWT_REFRESH_EXPIRES_IN'] || '7d' }
   );
 
@@ -46,7 +46,7 @@ const checkIpLockout = (ip: string): boolean => {
   if (!attempts) return false;
 
   const maxAttempts = parseInt(process.env['MAX_LOGIN_ATTEMPTS'] || '5');
-  const lockoutDuration = parseInt(process.env['LOCKOUT_DURATION'] || '900000');
+  const _lockoutDuration = parseInt(process.env['LOCKOUT_DURATION'] || '900000');
 
   if (attempts.count >= maxAttempts) {
     if (attempts.lockedUntil && Date.now() < attempts.lockedUntil) {
@@ -94,7 +94,7 @@ const logSecurityEvent = (event: string, details: any): void => {
 const checkAdminCredentials = async (email: string, password: string): Promise<boolean> => {
   const adminEmail = process.env['ADMIN_EMAIL'];
   const adminHash = process.env['ADMIN_PASSWORD_HASH'];
-  const moderatorEmail = process.env['MODERATOR_EMAIL'];
+  const _moderatorEmail = process.env['MODERATOR_EMAIL'];
   const moderatorHash = process.env['MODERATOR_PASSWORD_HASH'];
 
   if (email === adminEmail && adminHash) {
