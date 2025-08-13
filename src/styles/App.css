@@ -111,17 +111,17 @@
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
     border-bottom: 1px solid var(--border-color);
-    padding: 6px 8px;
-    min-height: auto;
+    padding: 4px 6px;
+    min-height: 40px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 6px;
   }
   
   .app-title {
-    font-size: 14px;
+    font-size: 12px;
     font-weight: 600;
     margin: 0;
     text-align: center;
@@ -133,28 +133,28 @@
   
   /* Компактные кнопки переключения */
   .view-mode-switcher {
-    gap: 4px;
+    gap: 2px;
     margin: 0;
   }
   
   .view-mode-switcher .button {
-    padding: 6px 10px;
-    font-size: 12px;
-    min-height: 28px;
-    border-radius: 6px;
+    padding: 4px 6px;
+    font-size: 10px;
+    min-height: 24px;
+    border-radius: 4px;
   }
   
   /* Компактные кнопки тем */
   .theme-switcher {
-    gap: 4px;
+    gap: 2px;
     margin: 0;
   }
   
   .theme-switcher .button {
-    padding: 6px 10px;
-    font-size: 12px;
-    min-height: 28px;
-    border-radius: 6px;
+    padding: 4px 6px;
+    font-size: 10px;
+    min-height: 24px;
+    border-radius: 4px;
   }
 
   /* Заголовок */
@@ -359,7 +359,7 @@
     -moz-user-select: none;
     -ms-user-select: none;
     user-select: none;
-    padding-top: 50px; /* Отступ для заголовка */
+    padding-top: 45px; /* Отступ для заголовка */
   }
   
   .graph-container canvas {
@@ -1905,7 +1905,7 @@ tr:hover {
   }
   
   .control-panel {
-    top: 6px;
+    top: 50px;
     right: 4px;
     padding: 6px;
     min-width: 120px;
@@ -1936,13 +1936,13 @@ tr:hover {
   .info-panel {
     bottom: 6px;
     left: 4px;
-    padding: 6px;
-    max-width: 180px;
-    border-radius: 8px;
+    padding: 4px;
+    max-width: 160px;
+    border-radius: 6px;
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    font-size: 10px;
-    max-height: 120px;
+    font-size: 9px;
+    max-height: 100px;
     overflow-y: auto;
   }
   
@@ -1958,7 +1958,7 @@ tr:hover {
   }
   
   .community-list {
-    padding: 60px 8px 60px 8px;
+    padding: 50px 8px 60px 8px;
   }
   
   .communities-grid {
