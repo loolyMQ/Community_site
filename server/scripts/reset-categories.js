@@ -117,6 +117,13 @@ async function resetDatabase() {
         icon: '🎮',
         color: '#85C1E9',
         sortOrder: 10
+      },
+      {
+        name: 'Студенческие отряды',
+        description: '',
+        icon: '🚀',
+        color: '#E74C3C',
+        sortOrder: 11
       }
     ];
 
