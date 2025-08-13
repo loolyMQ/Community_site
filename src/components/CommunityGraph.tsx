@@ -206,18 +206,6 @@ const CommunityGraph: React.FC = () => {
     // Клики обрабатываются через handlePointerUp
   }, []);
 
-  const handleMouseUp = useCallback(() => {
-    // Завершаем перетаскивание
-    setIsDragging(false);
-    if (selectedNode) {
-      unpinNode(selectedNode);
-    }
-    setSelectedNode(null);
-    setDragDistance(0);
-    // Сбрасываем флаг перетаскивания узла с небольшой задержкой
-    setTimeout(() => setWasNodeDragged(false), 100);
-  }, [selectedNode, unpinNode]);
-
   const handleContextMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
     
