@@ -88,155 +88,539 @@
   color: inherit !important;
 }
 
-/* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ===== */
+/* ===== MOBILE-FIRST АДАПТИВНЫЕ СТИЛИ ===== */
 
-/* Мобильные устройства (до 768px) */
-@media (max-width: 768px) {
-  /* Основной контейнер */
+/* Базовые стили для мобильных устройств (320px+) */
+.App {
+  width: 100%;
+  min-height: 100vh;
+  overflow-x: hidden;
+  touch-action: manipulation;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  font-size: 16px; /* Базовый размер шрифта для предотвращения зума на iOS */
+  line-height: 1.5;
+  padding: 0.5rem;
+  box-sizing: border-box;
+}
+
+/* Основной контейнер */
+.app-container {
+  max-width: 100%;
+  margin: 0 auto;
+  padding: 0.5rem;
+}
+
+/* Заголовок приложения - мобильная версия */
+.app-header {
+  position: fixed;
+  top: 0.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  background: var(--bg-secondary);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-primary);
+  border-radius: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  min-height: 2.5rem;
+  max-width: 90vw;
+  width: auto;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.app-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  line-height: 1.2;
+}
+
+/* Кнопки переключения - мобильная версия */
+.view-mode-switcher,
+.theme-switcher {
+  display: flex;
+  gap: 0.25rem;
+  margin: 0;
+}
+
+.view-mode-switcher .button,
+.theme-switcher .button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  min-height: 1.5rem;
+  border-radius: 0.375rem;
+  font-weight: 500;
+  min-width: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Панель управления - мобильная версия */
+.control-panel {
+  position: fixed;
+  top: 4rem;
+  right: 0.5rem;
+  z-index: 1000;
+  background: var(--bg-secondary);
+  padding: 0.5rem;
+  min-width: 6rem;
+  border-radius: 0.5rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid var(--border-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.control-panel .button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  margin-bottom: 0.25rem;
+  border-radius: 0.375rem;
+  min-height: 1.5rem;
+  font-weight: 500;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Информационная панель - мобильная версия */
+.info-panel {
+  position: fixed;
+  bottom: 0.5rem;
+  left: 0.5rem;
+  z-index: 1000;
+  background: var(--bg-secondary);
+  padding: 0.75rem;
+  max-width: 85vw;
+  border-radius: 0.75rem;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 0.875rem;
+  max-height: 30vh;
+  overflow-y: auto;
+  border: 1px solid var(--border-primary);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.info-panel h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.info-text {
+  font-size: 0.75rem;
+  line-height: 1.4;
+}
+
+/* Граф - мобильная версия */
+.graph-container {
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  touch-action: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  padding-top: 4rem;
+  box-sizing: border-box;
+}
+
+.graph-container canvas {
+  touch-action: none;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  width: 100%;
+  height: 100%;
+}
+
+/* Список сообществ - мобильная версия */
+.community-list {
+  padding: 4rem 0.5rem 4rem 0.5rem;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.community-card {
+  background: var(--bg-secondary);
+  padding: 1rem;
+  border-radius: 0.75rem;
+  margin-bottom: 0.75rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-primary);
+}
+
+.community-card h3 {
+  font-size: 1.125rem;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.community-card p {
+  font-size: 0.875rem;
+  line-height: 1.4;
+  margin-bottom: 0.75rem;
+}
+
+.community-actions {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.community-actions .button {
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  min-height: 2.5rem;
+  border-radius: 0.5rem;
+  flex: 1;
+  min-width: 6rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Кнопка админа - мобильная версия */
+.admin-btn {
+  position: fixed;
+  bottom: 0.5rem;
+  right: 0.5rem;
+  z-index: 1000;
+  padding: 0.5rem 0.75rem;
+  font-size: 0.875rem;
+  max-width: calc(50vw - 1rem);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  border-radius: 0.75rem;
+  min-height: 2.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Универсальные стили кнопок */
+.button {
+  background: var(--bg-tertiary);
+  border: 1px solid var(--border-secondary);
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  /* Улучшения для доступности */
+  outline: none;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+/* Фокус для доступности */
+.button:focus-visible {
+  outline: 2px solid var(--accent-color, #007bff);
+  outline-offset: 2px;
+}
+
+/* Улучшения для производительности */
+* {
+  box-sizing: border-box;
+}
+
+/* Оптимизация для GPU */
+.app-header,
+.control-panel,
+.info-panel,
+.admin-btn {
+  will-change: transform;
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Плавные переходы */
+.app-header,
+.control-panel,
+.info-panel,
+.admin-btn,
+.button,
+.community-card {
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Оптимизация скролла */
+.info-panel,
+.community-list {
+  -webkit-overflow-scrolling: touch;
+  scroll-behavior: smooth;
+  overscroll-behavior: contain;
+}
+
+/* Улучшения для изображений */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Оптимизация для высоких DPI экранов */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .app-header,
+  .control-panel,
+  .info-panel,
+  .admin-btn {
+    border-width: 0.5px;
+  }
+}
+
+.button:hover {
+  background: var(--bg-hover);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.button:active {
+  transform: translateY(0);
+}
+
+.button.active {
+  background: var(--bg-active);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+}
+
+/* Планшеты (768px+) */
+@media (min-width: 768px) {
   .App {
-    padding: 4px;
-    min-height: 100vh;
-    overflow-x: hidden;
-    touch-action: manipulation; /* Улучшает отзывчивость на мобильных */
+    padding: 1rem;
   }
   
-  /* Адаптивный заголовок для мобильных */
+  .app-container {
+    max-width: 90%;
+    padding: 1rem;
+  }
+  
   .app-header {
-    position: fixed;
-    top: 4px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 1000;
-    background: var(--bg-color);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 2px 6px;
-    min-height: 20px;
-    max-width: 180px;
-    width: auto;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 4px;
+    top: 1rem;
+    padding: 0.75rem 1rem;
+    min-height: 3rem;
+    max-width: 80vw;
   }
   
   .app-title {
-    font-size: 8px;
-    font-weight: 600;
-    margin: 0;
-    text-align: center;
-    flex: 1;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    line-height: 1.2;
+    font-size: 1rem;
   }
   
-  /* Миниатюрные кнопки переключения */
-  .view-mode-switcher {
-    gap: 1px;
-    margin: 0;
-  }
-  
-  .view-mode-switcher .button {
-    padding: 2px 4px;
-    font-size: 6px;
-    min-height: 12px;
-    border-radius: 3px;
-    font-weight: 500;
-  }
-  
-  /* Миниатюрные кнопки тем */
-  .theme-switcher {
-    gap: 1px;
-    margin: 0;
-  }
-  
+  .view-mode-switcher .button,
   .theme-switcher .button {
-    padding: 2px 4px;
-    font-size: 6px;
-    min-height: 12px;
-    border-radius: 3px;
-    font-weight: 500;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    min-height: 2rem;
+    min-width: 3rem;
   }
-
-  /* Заголовок */
-  .app-header {
-    padding: 8px 12px;
-    flex-direction: column;
-    gap: 8px;
-    min-height: auto;
-  }
-
-  .app-header h1 {
-    font-size: 18px;
-    margin: 0;
-  }
-
-  .app-header .header-controls {
-    flex-direction: row;
-    gap: 8px;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-
-  /* Кнопки */
-  .view-mode-btn,
-  .theme-btn,
-  .admin-btn {
-    padding: 6px 10px;
-    font-size: 12px;
-    min-width: auto;
-    height: 32px;
-  }
-
-  /* Панели управления */
+  
   .control-panel {
-    position: fixed;
-    top: 50%;
-    right: 8px;
-    transform: translateY(-50%);
-    width: 120px;
-    max-height: 80vh;
-    overflow-y: auto;
-    z-index: 1000;
-    background: var(--bg-secondary);
-    border-radius: 8px;
-    padding: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    top: 5rem;
+    right: 1rem;
+    padding: 0.75rem;
+    min-width: 8rem;
   }
-
+  
+  .control-panel .button {
+    padding: 0.375rem 0.75rem;
+    font-size: 0.875rem;
+    min-height: 2rem;
+  }
+  
   .info-panel {
-    position: fixed;
-    bottom: 8px;
-    left: 8px;
-    width: 140px;
-    max-height: 30vh;
-    overflow-y: auto;
-    z-index: 1000;
-    background: var(--bg-secondary);
-    border-radius: 8px;
-    padding: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-  }
-
-  /* Фильтр категорий */
-  .category-filter {
-    position: fixed;
-    top: 8px;
-    left: 8px;
-    width: 140px;
+    bottom: 1rem;
+    left: 1rem;
+    padding: 1rem;
+    max-width: 25rem;
     max-height: 40vh;
-    overflow-y: auto;
-    z-index: 1000;
-    background: var(--bg-secondary);
-    border-radius: 8px;
-    padding: 8px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
   }
+  
+  .info-panel h3 {
+    font-size: 1.125rem;
+  }
+  
+  .info-text {
+    font-size: 0.875rem;
+  }
+  
+  .graph-container {
+    padding-top: 5rem;
+  }
+  
+  .community-list {
+    padding: 5rem 1rem 4rem 1rem;
+  }
+  
+  .community-card {
+    padding: 1.25rem;
+  }
+  
+  .community-card h3 {
+    font-size: 1.25rem;
+  }
+  
+  .community-card p {
+    font-size: 1rem;
+  }
+  
+  .community-actions .button {
+    padding: 0.625rem 1rem;
+    font-size: 1rem;
+    min-height: 2.75rem;
+  }
+  
+  .admin-btn {
+    bottom: 1rem;
+    right: 1rem;
+    padding: 0.625rem 1rem;
+    font-size: 1rem;
+    min-height: 2.75rem;
+  }
+}
+
+/* Десктопы (1024px+) */
+@media (min-width: 1024px) {
+  .App {
+    padding: 1.5rem;
+  }
+  
+  .app-container {
+    max-width: 80%;
+    padding: 1.5rem;
+  }
+  
+  .app-header {
+    top: 1.5rem;
+    padding: 1rem 1.5rem;
+    min-height: 3.5rem;
+    max-width: 70vw;
+  }
+  
+  .app-title {
+    font-size: 1.125rem;
+  }
+  
+  .view-mode-switcher .button,
+  .theme-switcher .button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    min-height: 2.5rem;
+    min-width: 4rem;
+  }
+  
+  .control-panel {
+    top: 6rem;
+    right: 1.5rem;
+    padding: 1rem;
+    min-width: 10rem;
+  }
+  
+  .control-panel .button {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    min-height: 2.5rem;
+  }
+  
+  .info-panel {
+    bottom: 1.5rem;
+    left: 1.5rem;
+    padding: 1.25rem;
+    max-width: 30rem;
+    max-height: 50vh;
+  }
+  
+  .info-panel h3 {
+    font-size: 1.25rem;
+  }
+  
+  .info-text {
+    font-size: 1rem;
+  }
+  
+  .graph-container {
+    padding-top: 6rem;
+  }
+  
+  .community-list {
+    padding: 6rem 1.5rem 4rem 1.5rem;
+  }
+  
+  .community-card {
+    padding: 1.5rem;
+  }
+  
+  .community-card h3 {
+    font-size: 1.375rem;
+  }
+  
+  .community-card p {
+    font-size: 1.125rem;
+  }
+  
+  .community-actions .button {
+    padding: 0.75rem 1.25rem;
+    font-size: 1.125rem;
+    min-height: 3rem;
+  }
+  
+  .admin-btn {
+    bottom: 1.5rem;
+    right: 1.5rem;
+    padding: 0.75rem 1.25rem;
+    font-size: 1.125rem;
+    min-height: 3rem;
+  }
+}
+
+/* Большие экраны (1440px+) */
+@media (min-width: 1440px) {
+  .app-container {
+    max-width: 70%;
+  }
+  
+  .app-header {
+    max-width: 60vw;
+  }
+  
+  .info-panel {
+    max-width: 35rem;
+  }
+}
+  }
+  
+
 
   .category-filter h3 {
     font-size: 14px;
@@ -471,31 +855,216 @@
   }
 }
 
-/* Скрытие элементов на очень маленьких экранах */
+/* Очень маленькие экраны (320px - 480px) */
 @media (max-width: 480px) {
+  .App {
+    padding: 0.25rem;
+    font-size: 14px;
+  }
+  
+  .app-header {
+    top: 0.25rem;
+    padding: 0.375rem 0.5rem;
+    min-height: 2rem;
+    max-width: 95vw;
+    gap: 0.25rem;
+  }
+  
+  .app-title {
+    font-size: 0.75rem;
+  }
+  
+  .view-mode-switcher .button,
+  .theme-switcher .button {
+    padding: 0.25rem 0.375rem;
+    font-size: 0.625rem;
+    min-height: 1.25rem;
+    min-width: 2rem;
+  }
+  
   .control-panel {
-    width: 100px;
-    right: 4px;
+    top: 3rem;
+    right: 0.25rem;
+    padding: 0.375rem;
+    min-width: 5rem;
   }
-
+  
+  .control-panel .button {
+    padding: 0.25rem 0.375rem;
+    font-size: 0.625rem;
+    min-height: 1.25rem;
+    margin-bottom: 0.125rem;
+  }
+  
   .info-panel {
-    width: 120px;
-    left: 4px;
-    bottom: 4px;
+    bottom: 0.25rem;
+    left: 0.25rem;
+    padding: 0.5rem;
+    max-width: 90vw;
+    max-height: 25vh;
+    font-size: 0.75rem;
   }
-
-  .category-filter {
-    width: 120px;
-    left: 4px;
-    top: 4px;
+  
+  .info-panel h3 {
+    font-size: 0.875rem;
+    margin-bottom: 0.25rem;
   }
-
-  .view-mode-btn,
-  .theme-btn,
+  
+  .info-text {
+    font-size: 0.625rem;
+    line-height: 1.3;
+  }
+  
+  .graph-container {
+    padding-top: 3rem;
+  }
+  
+  .community-list {
+    padding: 3rem 0.25rem 3rem 0.25rem;
+  }
+  
+  .community-card {
+    padding: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .community-card h3 {
+    font-size: 1rem;
+    margin-bottom: 0.375rem;
+  }
+  
+  .community-card p {
+    font-size: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .community-actions {
+    gap: 0.375rem;
+  }
+  
+  .community-actions .button {
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+    min-height: 2rem;
+    min-width: 4rem;
+  }
+  
   .admin-btn {
-    padding: 4px 8px;
-    font-size: 11px;
-    height: 28px;
+    bottom: 0.25rem;
+    right: 0.25rem;
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+    min-height: 2rem;
+    max-width: calc(50vw - 0.5rem);
+  }
+  
+  /* Скрываем несущественные элементы */
+  .desktop-only,
+  .tablet-only {
+    display: none !important;
+  }
+  
+  /* Увеличиваем размеры для удобства касания */
+  .button {
+    min-height: 2rem;
+    min-width: 2.5rem;
+  }
+  
+  /* Оптимизируем скролл */
+  .info-panel,
+  .community-list {
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+  }
+}
+
+/* Средние мобильные устройства (481px - 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+  .App {
+    padding: 0.5rem;
+    font-size: 15px;
+  }
+  
+  .app-header {
+    top: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    min-height: 2.25rem;
+    max-width: 92vw;
+  }
+  
+  .app-title {
+    font-size: 0.875rem;
+  }
+  
+  .view-mode-switcher .button,
+  .theme-switcher .button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    min-height: 1.5rem;
+    min-width: 2.5rem;
+  }
+  
+  .control-panel {
+    top: 3.5rem;
+    right: 0.5rem;
+    padding: 0.5rem;
+    min-width: 6rem;
+  }
+  
+  .control-panel .button {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.75rem;
+    min-height: 1.5rem;
+  }
+  
+  .info-panel {
+    bottom: 0.5rem;
+    left: 0.5rem;
+    padding: 0.75rem;
+    max-width: 88vw;
+    max-height: 28vh;
+  }
+  
+  .info-panel h3 {
+    font-size: 1rem;
+  }
+  
+  .info-text {
+    font-size: 0.75rem;
+  }
+  
+  .graph-container {
+    padding-top: 3.5rem;
+  }
+  
+  .community-list {
+    padding: 3.5rem 0.5rem 3rem 0.5rem;
+  }
+  
+  .community-card {
+    padding: 1rem;
+  }
+  
+  .community-card h3 {
+    font-size: 1.125rem;
+  }
+  
+  .community-card p {
+    font-size: 0.875rem;
+  }
+  
+  .community-actions .button {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    min-height: 2.25rem;
+  }
+  
+  .admin-btn {
+    bottom: 0.5rem;
+    right: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    min-height: 2.25rem;
   }
 }
 
@@ -508,12 +1077,27 @@
   display: none;
 }
 
+.tablet-only {
+  display: none;
+}
+
 @media (max-width: 768px) {
   .desktop-only {
     display: none;
   }
   
   .mobile-only {
+    display: inline;
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .desktop-only,
+  .mobile-only {
+    display: none;
+  }
+  
+  .tablet-only {
     display: inline;
   }
 }
@@ -723,22 +1307,9 @@
     text-overflow: ellipsis !important;
     line-height: 1.2 !important;
   }
-  
-  /* Очень маленькие экраны */
-  @media (max-width: 480px) {
-    .app-header {
-      top: 4px !important;
-      max-width: 120px !important;
-      padding: 2px 4px !important;
-      min-height: 18px !important;
-    }
-    
-    .app-title {
-      font-size: 8px !important;
-    }
-  }
 }
 
+/* Десктопные стили */
 .app-title {
   font-size: 20px;
   font-weight: 700;
@@ -2196,23 +2767,61 @@ tr:hover {
 
 /* Ландшафтная ориентация на мобильных */
 @media (max-width: 768px) and (orientation: landscape) {
-  .admin-btn {
-    bottom: 5px;
-    right: 20px;
-    padding: 8px 10px;
-    font-size: 11px;
+  .App {
+    padding: 0.25rem;
   }
   
   .app-header {
-    top: 5px;
-    left: 5px;
-    padding: 8px 12px;
+    top: 0.25rem;
+    left: 0.25rem;
+    padding: 0.375rem 0.5rem;
+    min-height: 1.75rem;
+    max-width: 40vw;
+    transform: none;
+  }
+  
+  .control-panel {
+    top: 0.25rem;
+    right: 0.25rem;
+    padding: 0.375rem;
+    min-width: 5rem;
   }
   
   .info-panel {
-    bottom: 5px;
-    left: 5px;
-    padding: 8px 12px;
+    bottom: 0.25rem;
+    left: 0.25rem;
+    padding: 0.5rem;
+    max-width: 35vw;
+    max-height: 20vh;
+  }
+  
+  .admin-btn {
+    bottom: 0.25rem;
+    right: 0.25rem;
+    padding: 0.375rem 0.5rem;
+    font-size: 0.75rem;
+    min-height: 1.75rem;
+  }
+  
+  .graph-container {
+    padding-top: 2.5rem;
+  }
+  
+  .community-list {
+    padding: 2.5rem 0.25rem 2rem 0.25rem;
+  }
+  
+  /* Скрываем несущественные элементы в ландшафте */
+  .app-title {
+    font-size: 0.75rem;
+  }
+  
+  .view-mode-switcher .button,
+  .theme-switcher .button {
+    padding: 0.25rem 0.375rem;
+    font-size: 0.625rem;
+    min-height: 1.25rem;
+    min-width: 2rem;
   }
 }
 
