@@ -8,14 +8,17 @@ COPY server/package*.json ./server/
 # Переходим в папку server
 WORKDIR /app/server
 
-# Устанавливаем зависимости
-RUN npm ci --only=production
+# Устанавливаем ВСЕ зависимости (включая devDependencies для сборки)
+RUN npm ci
 
 # Копируем исходный код server
 COPY server/ ./
 
 # Собираем приложение
 RUN npm run build
+
+# Удаляем devDependencies после сборки
+RUN npm prune --production
 
 # Открываем порт
 EXPOSE 3001
