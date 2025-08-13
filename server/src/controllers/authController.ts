@@ -23,8 +23,8 @@ const generateTokens = (user: { id: string; email: string; role: string }) => {
       role: user.role,
       iat: Math.floor(Date.now() / 1000)
     },
-    jwtSecret as string,
-    { expiresIn: process.env['JWT_EXPIRES_IN'] || '15m' }
+    jwtSecret,
+    { expiresIn: process.env['JWT_EXPIRES_IN'] || '15m' } as jwt.SignOptions
   );
 
   const refreshToken = jwt.sign(
@@ -33,8 +33,8 @@ const generateTokens = (user: { id: string; email: string; role: string }) => {
       email: user.email,
       iat: Math.floor(Date.now() / 1000)
     },
-    jwtRefreshSecret as string,
-    { expiresIn: process.env['JWT_REFRESH_EXPIRES_IN'] || '7d' }
+    jwtRefreshSecret,
+    { expiresIn: process.env['JWT_REFRESH_EXPIRES_IN'] || '7d' } as jwt.SignOptions
   );
 
   return { accessToken, refreshToken };
@@ -46,7 +46,7 @@ const checkIpLockout = (ip: string): boolean => {
   if (!attempts) return false;
 
   const maxAttempts = parseInt(process.env['MAX_LOGIN_ATTEMPTS'] || '5');
-  const _lockoutDuration = parseInt(process.env['LOCKOUT_DURATION'] || '900000');
+  // const _lockoutDuration = parseInt(process.env['LOCKOUT_DURATION'] || '900000');
 
   if (attempts.count >= maxAttempts) {
     if (attempts.lockedUntil && Date.now() < attempts.lockedUntil) {
@@ -234,7 +234,7 @@ export const login = async (req: Request, res: Response): Promise<void> => {
     if (isAdminLogin) {
       // Определяем роль
       const adminEmail = process.env['ADMIN_EMAIL'];
-      const _moderatorEmail = process.env['MODERATOR_EMAIL'];
+      // const _moderatorEmail = process.env['MODERATOR_EMAIL'];
       const role = email === adminEmail ? 'ADMIN' : 'MODERATOR';
       const name = email === adminEmail ? 'Администратор Системы' : 'Модератор Студсовета';
 
