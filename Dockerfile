@@ -27,5 +27,9 @@ EXPOSE 3001
 HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
   CMD curl -f http://localhost:3001/health || exit 1
 
+# Скрипт запуска с миграциями
+COPY server/start.sh ./
+RUN chmod +x start.sh
+
 # Запускаем приложение
-CMD ["npm", "start"] 
+CMD ["./start.sh"] 

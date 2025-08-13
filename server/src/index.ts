@@ -96,7 +96,17 @@ app.get('/health', (_req, res) => {
   res.json({ 
     status: 'OK', 
     timestamp: new Date().toISOString(),
-    environment: process.env['NODE_ENV'] || 'development'
+    environment: process.env['NODE_ENV'] || 'development',
+    port: PORT
+  });
+});
+
+// Root endpoint
+app.get('/', (_req, res) => {
+  res.json({ 
+    message: 'Community Graph API Server',
+    version: '1.0.0',
+    status: 'running'
   });
 });
 
