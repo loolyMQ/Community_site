@@ -88,6 +88,313 @@
   color: inherit !important;
 }
 
+/* ===== АДАПТИВНЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ УСТРОЙСТВ ===== */
+
+/* Мобильные устройства (до 768px) */
+@media (max-width: 768px) {
+  /* Основной контейнер */
+  .App {
+    padding: 8px;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* Заголовок */
+  .app-header {
+    padding: 8px 12px;
+    flex-direction: column;
+    gap: 8px;
+    min-height: auto;
+  }
+
+  .app-header h1 {
+    font-size: 18px;
+    margin: 0;
+  }
+
+  .app-header .header-controls {
+    flex-direction: row;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  /* Кнопки */
+  .view-mode-btn,
+  .theme-btn,
+  .admin-btn {
+    padding: 6px 10px;
+    font-size: 12px;
+    min-width: auto;
+    height: 32px;
+  }
+
+  /* Панели управления */
+  .control-panel {
+    position: fixed;
+    top: 50%;
+    right: 8px;
+    transform: translateY(-50%);
+    width: 120px;
+    max-height: 80vh;
+    overflow-y: auto;
+    z-index: 1000;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .info-panel {
+    position: fixed;
+    bottom: 8px;
+    left: 8px;
+    width: 140px;
+    max-height: 30vh;
+    overflow-y: auto;
+    z-index: 1000;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  /* Фильтр категорий */
+  .category-filter {
+    position: fixed;
+    top: 8px;
+    left: 8px;
+    width: 140px;
+    max-height: 40vh;
+    overflow-y: auto;
+    z-index: 1000;
+    background: var(--bg-secondary);
+    border-radius: 8px;
+    padding: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  }
+
+  .category-filter h3 {
+    font-size: 14px;
+    margin: 0 0 8px 0;
+  }
+
+  .category-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    margin: 2px;
+    min-width: auto;
+  }
+
+  /* Модальные окна */
+  .modal {
+    padding: 8px;
+  }
+
+  .modal-content {
+    width: 95vw;
+    max-width: none;
+    max-height: 90vh;
+    margin: 20px auto;
+    padding: 12px;
+    overflow-y: auto;
+  }
+
+  .modal-header {
+    padding: 8px 0;
+  }
+
+  .modal-header h2 {
+    font-size: 18px;
+  }
+
+  .modal-body {
+    padding: 8px 0;
+  }
+
+  .modal-footer {
+    padding: 8px 0;
+    gap: 8px;
+  }
+
+  /* Формы */
+  .form-group {
+    margin-bottom: 12px;
+  }
+
+  .form-label {
+    font-size: 14px;
+    margin-bottom: 4px;
+  }
+
+  .form-input,
+  .form-textarea,
+  .form-select {
+    padding: 8px;
+    font-size: 14px;
+  }
+
+  .form-textarea {
+    min-height: 80px;
+  }
+
+  /* Кнопки в модальных окнах */
+  .modal .button {
+    padding: 8px 12px;
+    font-size: 14px;
+    min-height: 36px;
+  }
+
+  /* Граф */
+  .graph-container {
+    width: 100vw;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+  }
+
+  /* Список сообществ */
+  .community-list {
+    padding: 8px;
+    margin-top: 60px;
+  }
+
+  .category-section {
+    margin-bottom: 16px;
+  }
+
+  .category-header {
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+
+  .category-header h2 {
+    font-size: 16px;
+  }
+
+  .community-card {
+    padding: 8px;
+    margin-bottom: 8px;
+  }
+
+  .community-card h3 {
+    font-size: 14px;
+  }
+
+  .community-card p {
+    font-size: 12px;
+  }
+
+  /* Админ-панель */
+  .admin-panel {
+    padding: 8px;
+  }
+
+  .admin-section {
+    margin-bottom: 16px;
+  }
+
+  .admin-section-header {
+    padding: 8px;
+  }
+
+  .admin-section-header h2 {
+    font-size: 16px;
+  }
+
+  /* Таблицы */
+  .admin-table {
+    font-size: 12px;
+  }
+
+  .admin-table th,
+  .admin-table td {
+    padding: 4px 6px;
+  }
+
+  /* Уведомления */
+  .notification {
+    position: fixed;
+    top: 8px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90vw;
+    max-width: 300px;
+    z-index: 2000;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
+}
+
+/* Планшеты (768px - 1024px) */
+@media (min-width: 769px) and (max-width: 1024px) {
+  .control-panel {
+    width: 180px;
+  }
+
+  .info-panel {
+    width: 200px;
+  }
+
+  .category-filter {
+    width: 200px;
+  }
+
+  .modal-content {
+    width: 80vw;
+    max-width: 600px;
+  }
+}
+
+/* Скрытие элементов на очень маленьких экранах */
+@media (max-width: 480px) {
+  .control-panel {
+    width: 100px;
+    right: 4px;
+  }
+
+  .info-panel {
+    width: 120px;
+    left: 4px;
+    bottom: 4px;
+  }
+
+  .category-filter {
+    width: 120px;
+    left: 4px;
+    top: 4px;
+  }
+
+  .view-mode-btn,
+  .theme-btn,
+  .admin-btn {
+    padding: 4px 8px;
+    font-size: 11px;
+    height: 28px;
+  }
+}
+
+/* Скрытие/показ элементов на разных устройствах */
+.desktop-only {
+  display: inline;
+}
+
+.mobile-only {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .desktop-only {
+    display: none;
+  }
+  
+  .mobile-only {
+    display: inline;
+  }
+}
+
 /* Принудительно устанавливаем цвета для админ-панели в светлой теме */
 [data-theme="light"] .admin-panel h1,
 [data-theme="light"] .admin-panel h2,

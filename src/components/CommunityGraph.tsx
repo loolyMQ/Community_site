@@ -83,8 +83,9 @@ const CommunityGraph: React.FC = () => {
     }
   });
 
-  // Обработка событий мыши
-  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+  // Обработка событий мыши и касаний
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
 
@@ -98,6 +99,18 @@ const CommunityGraph: React.FC = () => {
       pinNode(clickedNode.id);
       setIsDragging(true);
       setDragStart({ x: e.clientX, y: e.clientY });
+      setWasNodeDragged(false);
+    } else {
+      setIsDragging(true);
+      setDragStart({ x: e.clientX, y: e.clientY });
+      setDragDistance(0);
+    }
+  }, [offset, scale, pinNode]);
+
+  // Обработка событий мыши (для обратной совместимости)
+  const handleMouseDown = useCallback((e: React.MouseEvent) => {
+    handlePointerDown(e as any);
+  }, [handlePointerDown]);
     } else {
       setIsDragging(true);
       setDragStart({ x: e.clientX, y: e.clientY });
@@ -105,7 +118,8 @@ const CommunityGraph: React.FC = () => {
     }
   }, [offset, scale, graphData, positions, pinNode]);
 
-  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+  const handlePointerMove = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
     const rect = canvasRef.current?.getBoundingClientRect();
     if (!rect) return;
 
@@ -114,7 +128,6 @@ const CommunityGraph: React.FC = () => {
 
     // Обновляем hovered node
     const hoveredNode = findNodeAtPosition(x, y);
-
     setHoveredNode(hoveredNode?.id || null);
 
     if (isDragging) {
@@ -146,6 +159,11 @@ const CommunityGraph: React.FC = () => {
     }
   }, [isDragging, selectedNode, dragStart, offset, scale, setNodePosition, positions]);
 
+  // Обработка событий мыши (для обратной совместимости)
+  const handleMouseMove = useCallback((e: React.MouseEvent) => {
+    handlePointerMove(e as any);
+  }, [handlePointerMove]);
+
   const handleMouseUp = useCallback(() => {
     setIsDragging(false);
     if (selectedNode) {
@@ -157,24 +175,54 @@ const CommunityGraph: React.FC = () => {
     setTimeout(() => setWasNodeDragged(false), 100);
   }, [selectedNode, unpinNode]);
 
-  const handleClick = useCallback((e: React.MouseEvent) => {
-    if (isDragging || dragDistance > 20 || wasNodeDragged) return;
+  const handlePointerUp = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
+    
+    // Если это был клик (не перетаскивание)
+    if (!isDragging || dragDistance <= 20 && !wasNodeDragged) {
+      const rect = canvasRef.current?.getBoundingClientRect();
+      if (!rect) return;
 
-    const rect = canvasRef.current?.getBoundingClientRect();
-    if (!rect) return;
+      const x = (e.clientX - rect.left - offset.x) / scale;
+      const y = (e.clientY - rect.top - offset.y) / scale;
 
-    const x = (e.clientX - rect.left - offset.x) / scale;
-    const y = (e.clientY - rect.top - offset.y) / scale;
-
-    const clickedNode = findNodeAtPosition(x, y);
-    if (clickedNode && clickedNode.type === 'community') {
-      const community = communities.find(c => c.id === clickedNode.id);
-      if (community) {
-        setSelectedCommunity(community);
-        setShowCommunityModal(true);
+      const clickedNode = findNodeAtPosition(x, y);
+      if (clickedNode && clickedNode.type === 'community') {
+        const community = communities.find(c => c.id === clickedNode.id);
+        if (community) {
+          setSelectedCommunity(community);
+          setShowCommunityModal(true);
+        }
       }
     }
-  }, [isDragging, dragDistance, wasNodeDragged, offset, scale, graphData, positions, communities]);
+
+    // Завершаем перетаскивание
+    setIsDragging(false);
+    if (selectedNode) {
+      unpinNode(selectedNode);
+    }
+    setSelectedNode(null);
+    setDragDistance(0);
+    // Сбрасываем флаг перетаскивания узла с небольшой задержкой
+    setTimeout(() => setWasNodeDragged(false), 100);
+  }, [isDragging, dragDistance, wasNodeDragged, offset, scale, graphData, positions, communities, selectedNode, unpinNode]);
+
+  // Обработка событий мыши (для обратной совместимости)
+  const handleClick = useCallback((e: React.MouseEvent) => {
+    // Клики обрабатываются через handlePointerUp
+  }, []);
+
+  const handleMouseUp = useCallback(() => {
+    // Завершаем перетаскивание
+    setIsDragging(false);
+    if (selectedNode) {
+      unpinNode(selectedNode);
+    }
+    setSelectedNode(null);
+    setDragDistance(0);
+    // Сбрасываем флаг перетаскивания узла с небольшой задержкой
+    setTimeout(() => setWasNodeDragged(false), 100);
+  }, [selectedNode, unpinNode]);
 
   const handleContextMenu = useCallback((e: React.MouseEvent) => {
     e.preventDefault();
@@ -216,6 +264,42 @@ const CommunityGraph: React.FC = () => {
     setScale(newScale);
     setOffset(newOffset);
   }, [scale, offset]);
+
+  // Обработка жестов масштабирования для мобильных устройств
+  const [initialDistance, setInitialDistance] = useState<number | null>(null);
+  const [initialScale, setInitialScale] = useState<number>(1);
+
+  const handleTouchStart = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2) {
+      // Два пальца - начало жеста масштабирования
+      const distance = Math.sqrt(
+        Math.pow(e.touches[0].clientX - e.touches[1].clientX, 2) +
+        Math.pow(e.touches[0].clientY - e.touches[1].clientY, 2)
+      );
+      setInitialDistance(distance);
+      setInitialScale(scale);
+    }
+  }, [scale]);
+
+  const handleTouchMove = useCallback((e: React.TouchEvent) => {
+    if (e.touches.length === 2 && initialDistance !== null) {
+      e.preventDefault();
+      
+      const distance = Math.sqrt(
+        Math.pow(e.touches[0].clientX - e.touches[1].clientX, 2) +
+        Math.pow(e.touches[0].clientY - e.touches[1].clientY, 2)
+      );
+      
+      const scaleRatio = distance / initialDistance;
+      const newScale = Math.max(0.1, Math.min(5, initialScale * scaleRatio));
+      
+      setScale(newScale);
+    }
+  }, [initialDistance, initialScale]);
+
+  const handleTouchEnd = useCallback(() => {
+    setInitialDistance(null);
+  }, []);
 
   // Поиск узла по позиции - оптимизированный
   const findNodeAtPosition = useCallback((x: number, y: number): GraphNode | null => {
@@ -512,8 +596,10 @@ const CommunityGraph: React.FC = () => {
         <div className="info-panel">
           <h3>Как использовать</h3>
           <div className="info-text">
-            • Перетаскивайте узлы мышью<br/>
-            • Используйте колесо мыши для масштабирования<br/>
+            <span className="desktop-only">• Перетаскивайте узлы мышью<br/>
+            • Используйте колесо мыши для масштабирования<br/></span>
+            <span className="mobile-only">• Перетаскивайте узлы пальцем<br/>
+            • Используйте два пальца для масштабирования<br/></span>
             • Кликните на сообщество для подробностей<br/>
             • По всем вопросам обращайтесь в <a href="https://t.me/a_attuu" target="_blank" rel="noopener noreferrer">Telegram</a>
           </div>
@@ -527,15 +613,22 @@ const CommunityGraph: React.FC = () => {
             ref={canvasRef}
             width={window.innerWidth}
             height={window.innerHeight}
+            onPointerDown={handlePointerDown}
+            onPointerMove={handlePointerMove}
+            onPointerUp={handlePointerUp}
             onMouseDown={handleMouseDown}
             onMouseMove={handleMouseMove}
             onMouseUp={handleMouseUp}
             onClick={handleClick}
             onContextMenu={handleContextMenu}
+            onTouchStart={handleTouchStart}
+            onTouchMove={handleTouchMove}
+            onTouchEnd={handleTouchEnd}
             style={{ 
               cursor: isDragging ? 'grabbing' : 'grab',
               position: 'relative',
-              zIndex: 10
+              zIndex: 10,
+              touchAction: 'none' // Отключаем стандартные жесты браузера
             }}
           />
           {theme === 'dark' && (
