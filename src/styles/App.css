@@ -254,7 +254,6 @@
   transition: all 0.3s ease;
   position: relative;
   overflow: hidden;
-  font-size: 1.25rem;
 }
 
 .admin-toggle.glassmorphic:hover {
