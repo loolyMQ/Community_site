@@ -2250,6 +2250,7 @@ img {
   z-index: 2000;
   display: flex;
   flex-direction: column;
+  pointer-events: auto;
 }
 
 .admin-header {
