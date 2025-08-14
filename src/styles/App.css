@@ -107,7 +107,7 @@
 /* Новый мобильный интерфейс */
 .mobile-view-controls {
   position: fixed;
-  top: 0.5rem;
+  top: calc(0.5rem + env(safe-area-inset-top, 2rem)); /* Отступ для notch/Dynamic Island */
   left: 0.5rem;
   z-index: 1001; /* Выше canvas */
   display: flex;
@@ -234,7 +234,7 @@
 /* Кнопки управления справа */
 .mobile-control-panel {
   position: fixed;
-  top: 0.5rem;
+  top: calc(0.5rem + env(safe-area-inset-top, 2rem)); /* Отступ для notch/Dynamic Island */
   right: 0.5rem;
   z-index: 1001; /* Выше canvas */
   display: flex;
@@ -314,12 +314,14 @@
 @media (max-width: 767px) {
   .graph-view {
     padding: 0; /* Убираем ВСЕ отступы */
+    padding-top: env(safe-area-inset-top, 2rem); /* Отступ для notch/Dynamic Island */
   }
   
   /* Список тоже должен начинаться от верха */
   .community-list {
     padding: 0 !important; /* Убираем все отступы */
     margin: 0 !important; /* Убираем все отступы */
+    padding-top: env(safe-area-inset-top, 2rem) !important; /* Отступ для notch/Dynamic Island */
   }
 }
 
