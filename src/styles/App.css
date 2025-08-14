@@ -405,7 +405,7 @@
 /* Информационная панель - мобильная версия */
 .info-panel {
   position: fixed;
-  bottom: 0.5rem;
+  bottom: 4rem; /* Отступ для тулбара браузера */
   left: 0.5rem;
   z-index: 1000;
   background: var(--bg-secondary);
@@ -472,6 +472,8 @@
     top: 0 !important; /* От верха экрана */
     left: 0 !important; /* От левого края экрана */
     z-index: 1 !important; /* Под кнопками управления */
+    display: block !important; /* Блочный элемент */
+    box-sizing: border-box !important; /* Учитываем границы в размерах */
   }
 }
 
@@ -524,7 +526,7 @@
 /* Кнопка админа - мобильная версия */
 .admin-btn {
   position: fixed;
-  bottom: 0.5rem;
+  bottom: 4rem; /* Отступ для тулбара браузера */
   right: 0.5rem;
   z-index: 1000;
   padding: 0.5rem 0.75rem;

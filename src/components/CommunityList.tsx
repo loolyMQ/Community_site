@@ -30,6 +30,29 @@ const CommunityList: React.FC<CommunityListProps> = ({ communities, categories, 
 
   return (
     <div className="community-list">
+      {/* Фильтр по категориям */}
+      <div className="category-filter">
+        <h3 className="shiny-text" data-text="Фильтр по категориям">Фильтр по категориям</h3>
+        <div className="category-buttons">
+          <button 
+            className={`category-btn ${selectedCategory === null ? 'active' : ''}`}
+            onClick={() => setSelectedCategory(null)}
+          >
+            <span className="shiny-text" data-text="Все категории">Все категории</span>
+          </button>
+          {categories.map(category => (
+            <button
+              key={category.id}
+              className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
+              onClick={() => setSelectedCategory(category.id)}
+              style={{ borderColor: category.color }}
+            >
+              <span className="shiny-text" data-text={`${category.icon} ${category.name}`}>{category.icon} {category.name}</span>
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Поиск по названию */}
       <div className="search-section mb-6">
         <h3 className="shiny-text mb-3" data-text="Поиск сообществ">Поиск сообществ</h3>
@@ -50,29 +73,6 @@ const CommunityList: React.FC<CommunityListProps> = ({ communities, categories, 
               ✕
             </button>
           )}
-        </div>
-      </div>
-
-      {/* Фильтр по главным категориям */}
-      <div className="category-filter">
-        <h3 className="shiny-text" data-text="Фильтр по главным категориям">Фильтр по главным категориям</h3>
-        <div className="category-buttons">
-          <button 
-            className={`category-btn ${selectedCategory === null ? 'active' : ''}`}
-            onClick={() => setSelectedCategory(null)}
-          >
-            <span className="shiny-text" data-text="Все категории">Все категории</span>
-          </button>
-          {categories.map(category => (
-            <button
-              key={category.id}
-              className={`category-btn ${selectedCategory === category.id ? 'active' : ''}`}
-              onClick={() => setSelectedCategory(category.id)}
-              style={{ borderColor: category.color }}
-            >
-              <span className="shiny-text" data-text={`${category.icon} ${category.name}`}>{category.icon} {category.name}</span>
-            </button>
-          ))}
         </div>
       </div>
 
