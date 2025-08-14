@@ -413,7 +413,7 @@
 /* Информационная панель - мобильная версия */
 .info-panel {
   position: fixed;
-  bottom: calc(4rem + env(safe-area-inset-bottom, 0px)); /* Отступ для тулбара браузера + безопасная зона */
+  bottom: 4rem; /* Базовый отступ */
   left: 0.5rem;
   z-index: 1000;
   background: var(--bg-secondary);
@@ -428,6 +428,19 @@
   border: 1px solid var(--border-primary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
   pointer-events: auto; /* Разрешаем взаимодействие */
+}
+
+/* Медиа-запросы для тулбара браузера (как в Bootstrap) */
+@media (max-height: 700px) {
+  .info-panel {
+    bottom: 6rem; /* Больший отступ для маленьких экранов */
+  }
+}
+
+@media (max-height: 600px) {
+  .info-panel {
+    bottom: 8rem; /* Еще больший отступ для очень маленьких экранов */
+  }
 }
 
 .info-panel h3 {
@@ -538,7 +551,7 @@
 /* Кнопка админа - мобильная версия */
 .admin-btn {
   position: fixed;
-  bottom: calc(4rem + env(safe-area-inset-bottom, 0px)); /* Отступ для тулбара браузера + безопасная зона */
+  bottom: 4rem; /* Базовый отступ */
   right: 0.5rem;
   z-index: 1000;
   padding: 0.5rem 0.75rem;
@@ -552,6 +565,19 @@
   align-items: center;
   justify-content: center;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Медиа-запросы для тулбара браузера (как в Bootstrap) */
+@media (max-height: 700px) {
+  .admin-btn {
+    bottom: 6rem; /* Больший отступ для маленьких экранов */
+  }
+}
+
+@media (max-height: 600px) {
+  .admin-btn {
+    bottom: 8rem; /* Еще больший отступ для очень маленьких экранов */
+  }
 }
 
 /* Универсальные стили кнопок */
