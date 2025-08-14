@@ -61,6 +61,7 @@ const CommunityGraph: React.FC = () => {
   const [selectedCommunity, setSelectedCommunity] = useState<Community | null>(null);
   const [viewMode, setViewMode] = useState<'graph' | 'list'>('graph');
   const [showAdminPanel, setShowAdminPanel] = useState(false);
+  const [showInfoModal, setShowInfoModal] = useState(false);
   const [theme, setTheme] = useState<'dark' | 'light'>('light');
 
 
@@ -613,16 +614,7 @@ const CommunityGraph: React.FC = () => {
           </button>
         </div>
         
-        {/* Кнопка админа под кнопкой смены стиля */}
-        <div className="admin-toggle-container">
-          <button 
-            className="admin-toggle glassmorphic"
-            onClick={() => setShowAdminPanel(true)}
-            title="Войти в админ-панель"
-          >
-            👽
-          </button>
-        </div>
+
       </div>
 
       {/* Кнопки управления справа сверху */}
@@ -660,9 +652,21 @@ const CommunityGraph: React.FC = () => {
           <div className="info-toggle-container">
             <button 
               className="info-toggle glassmorphic"
+              onClick={() => setShowInfoModal(true)}
               title="Как использовать"
             >
               💡
+            </button>
+          </div>
+          
+          {/* Кнопка админа под кнопкой инструкции */}
+          <div className="admin-toggle-container">
+            <button 
+              className="admin-toggle glassmorphic"
+              onClick={() => setShowAdminPanel(true)}
+              title="Войти в админ-панель"
+            >
+              👽
             </button>
           </div>
         </div>
@@ -829,6 +833,8 @@ const CommunityGraph: React.FC = () => {
           dataVersion={dataVersion}
         />
       )}
+
+
 
       {/* Контекстное меню */}
       {contextMenu && (
