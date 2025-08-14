@@ -430,7 +430,7 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
-  padding-top: 4rem;
+  padding-top: 0;
   box-sizing: border-box;
 }
 
@@ -448,7 +448,7 @@
 
 /* Список сообществ - мобильная версия */
 .community-list {
-  padding: 4rem 0.5rem 4rem 0.5rem;
+  padding: 0.5rem;
   max-width: 100%;
   margin: 0 auto;
 }
@@ -678,6 +678,7 @@ img {
     font-size: 0.875rem;
   }
   
+  /* На планшетах и десктопах возвращаем отступы */
   .graph-container {
     padding-top: 5rem;
   }
