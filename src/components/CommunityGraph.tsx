@@ -562,7 +562,72 @@ const CommunityGraph: React.FC = () => {
 
   return (
     <div className="graph-view">
-      {/* Заголовок с переключателем */}
+      {/* Мобильный интерфейс */}
+      <div className="mobile-view-controls">
+        <div className="view-mode-switcher">
+          <button 
+            className={`view-mode-btn glassmorphic ${viewMode === 'graph' ? 'active' : ''}`}
+            onClick={() => setViewMode('graph')}
+          >
+            <span className="btn-icon">🕸️</span>
+            <span className="btn-text">Граф</span>
+          </button>
+          <button 
+            className={`view-mode-btn glassmorphic ${viewMode === 'list' ? 'active' : ''}`}
+            onClick={() => setViewMode('list')}
+          >
+            <span className="btn-icon">📋</span>
+            <span className="btn-text">Список</span>
+          </button>
+        </div>
+
+        {/* Переключатель темы под кнопками Граф/Список */}
+        <div className="theme-toggle-container">
+          <button 
+            className={`theme-toggle glassmorphic ${theme === 'dark' ? 'dark-active' : 'light-active'}`}
+            onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+          >
+            <span className="theme-icon dark-icon">🌙</span>
+            <span className="theme-icon light-icon">☀️</span>
+            <div className="theme-slider"></div>
+          </button>
+        </div>
+      </div>
+
+      {/* Кнопки управления справа сверху */}
+      {viewMode === 'graph' && (
+        <div className="mobile-control-panel">
+          <button 
+            className="control-btn glassmorphic"
+            onClick={() => {
+              setOffset({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+              setScale(1);
+            }}
+          >
+            <span className="btn-icon">🔄</span>
+            <span className="btn-text">Сбросить вид</span>
+          </button>
+          <button 
+            className="control-btn glassmorphic"
+            onClick={() => {
+              // Сбрасываем позиции всех узлов
+              graphData.nodes.forEach((node, index) => {
+                const angle = (index / graphData.nodes.length) * 2 * Math.PI;
+                const radius = 400 + Math.random() * 300;
+                setNodePosition(node.id, 
+                  Math.cos(angle) * radius, 
+                  Math.sin(angle) * radius
+                );
+              });
+            }}
+          >
+            <span className="btn-icon">🎲</span>
+            <span className="btn-text">Перемешать узлы</span>
+          </button>
+        </div>
+      )}
+
+      {/* Десктопный интерфейс */}
       <div className="app-header">
         <div className="app-title shiny-text" data-text="Карта студенческих сообществ">Карта студенческих сообществ</div>
         <div className="app-subtitle">Интерактивная визуализация</div>
