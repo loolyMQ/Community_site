@@ -231,6 +231,68 @@
   transform: scale(1);
 }
 
+/* Кнопка админа - точно такая же как смена стиля */
+.admin-toggle-container {
+  margin-top: 0.25rem;
+  display: flex;
+  justify-content: flex-start;
+}
+
+.admin-toggle.glassmorphic {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  min-width: 3rem;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+  font-size: 1.25rem;
+  color: var(--text-primary);
+}
+
+.admin-toggle.glassmorphic:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
+/* Кнопка инструкции - точно такая же как кнопки управления */
+.info-toggle-container {
+  margin-top: 0.25rem;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.info-toggle.glassmorphic {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  min-width: 3rem;
+  min-height: 3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  color: var(--text-primary);
+  font-size: 1.25rem;
+}
+
+.info-toggle.glassmorphic:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-1px);
+}
+
 /* Кнопки управления справа */
 .mobile-control-panel {
   position: fixed;

@@ -612,6 +612,17 @@ const CommunityGraph: React.FC = () => {
             <div className="theme-slider"></div>
           </button>
         </div>
+        
+        {/* Кнопка админа под кнопкой смены стиля */}
+        <div className="admin-toggle-container">
+          <button 
+            className="admin-toggle glassmorphic"
+            onClick={() => setShowAdminPanel(true)}
+            title="Войти в админ-панель"
+          >
+            👽
+          </button>
+        </div>
       </div>
 
       {/* Кнопки управления справа сверху */}
@@ -644,6 +655,16 @@ const CommunityGraph: React.FC = () => {
             <span className="btn-icon">🎲</span>
             <span className="btn-text">Перемешать узлы</span>
           </button>
+          
+          {/* Инструкция под кнопкой "Перемешать узлы" */}
+          <div className="info-toggle-container">
+            <button 
+              className="info-toggle glassmorphic"
+              title="Как использовать"
+            >
+              💡
+            </button>
+          </div>
         </div>
       )}
 
@@ -737,29 +758,7 @@ const CommunityGraph: React.FC = () => {
         </>
       )}
 
-      {/* Кнопка входа в админ-панель */}
-      <button 
-        className="admin-btn"
-        onClick={() => setShowAdminPanel(true)}
-        title="Войти в админ-панель"
-      >
-        <span className="shiny-text" data-text="⚙️ Админ">⚙️ Админ</span>
-      </button>
 
-      {/* Информационная панель */}
-      {viewMode === 'graph' && (
-        <div className="info-panel">
-          <h3>Как использовать</h3>
-          <div className="info-text">
-            <span className="desktop-only">• Перетаскивайте узлы мышью<br/>
-            • Используйте колесо мыши для масштабирования<br/></span>
-            <span className="mobile-only">• Перетаскивайте узлы пальцем<br/>
-            • Используйте два пальца для масштабирования<br/></span>
-            • Кликните на сообщество для подробностей<br/>
-            • По всем вопросам обращайтесь в <a href="https://t.me/a_attuu" target="_blank" rel="noopener noreferrer">Telegram</a>
-          </div>
-        </div>
-      )}
 
       {/* Контент в зависимости от режима */}
       {viewMode === 'graph' ? (
