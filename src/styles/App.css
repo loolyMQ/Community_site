@@ -109,7 +109,7 @@
   position: fixed;
   top: 0.5rem;
   left: 0.5rem;
-  z-index: 1000;
+  z-index: 1001; /* Выше canvas */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -236,7 +236,7 @@
   position: fixed;
   top: 0.5rem;
   right: 0.5rem;
-  z-index: 1000;
+  z-index: 1001; /* Выше canvas */
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -310,12 +310,10 @@
   overflow: hidden;
 }
 
-/* Отступ для мобильных кнопок управления */
+/* Граф должен занимать всю площадь экрана */
 @media (max-width: 767px) {
   .graph-view {
-    padding-top: 6rem; /* Уменьшенный отступ для кнопок управления сверху */
-    padding-left: 0; /* Убираем левый отступ */
-    padding-right: 0; /* Убираем правый отступ */
+    padding: 0; /* Убираем ВСЕ отступы */
   }
 }
 
@@ -466,9 +464,14 @@
 /* Canvas для мобильных устройств */
 @media (max-width: 767px) {
   canvas {
-    height: calc(100vh - 6rem) !important; /* Высота с учетом отступа для кнопок */
+    height: 100vh !important; /* Полная высота экрана */
+    width: 100vw !important; /* Полная ширина экрана */
     margin: 0 !important; /* Убираем все отступы */
     padding: 0 !important; /* Убираем все внутренние отступы */
+    position: fixed !important; /* Фиксированное позиционирование */
+    top: 0 !important; /* От верха экрана */
+    left: 0 !important; /* От левого края экрана */
+    z-index: 1 !important; /* Под кнопками управления */
   }
 }
 
