@@ -630,7 +630,6 @@ const CommunityGraph: React.FC = () => {
       {/* Десктопный интерфейс */}
       <div className="app-header">
         <div className="app-title shiny-text" data-text="Карта студенческих сообществ">Карта студенческих сообществ</div>
-        <div className="app-subtitle">Интерактивная визуализация</div>
         
         {/* Переключатель режимов */}
         <div className="view-mode-switcher">

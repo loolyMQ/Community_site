@@ -197,12 +197,12 @@
 
 .theme-icon.dark-icon {
   left: 0.5rem;
-  opacity: 1;
+  opacity: 0.5;
 }
 
 .theme-icon.light-icon {
   right: 0.5rem;
-  opacity: 0.5;
+  opacity: 1;
 }
 
 .theme-toggle.dark-active .theme-icon.dark-icon {
@@ -256,10 +256,12 @@
   transform: translateY(-1px);
 }
 
-/* Скрываем старые элементы */
-.app-header,
-.control-panel {
-  display: none !important;
+/* Скрываем старые элементы на мобильных */
+@media (max-width: 767px) {
+  .app-header,
+  .control-panel {
+    display: none !important;
+  }
 }
 
 /* Основной контейнер */
