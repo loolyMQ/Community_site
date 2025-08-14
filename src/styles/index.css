@@ -166,6 +166,7 @@ body {
   width: 90%;
   max-height: 80vh;
   overflow-y: auto;
+  overflow-x: hidden;
   position: relative;
 }
 
@@ -214,6 +215,28 @@ body {
 
 .modal-close:hover {
   color: #ffffff;
+}
+
+/* Стили для текста в модальном окне */
+.modal-body {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.modal-body p,
+.modal-body h1,
+.modal-body h2,
+.modal-body h3,
+.modal-body h4,
+.modal-body h5,
+.modal-body h6,
+.modal-body span,
+.modal-body div {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
 }
 
 /* Формы */
