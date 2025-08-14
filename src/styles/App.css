@@ -608,37 +608,7 @@
   justify-content: center;
 }
 
-/* Кнопка админа - мобильная версия */
-.admin-btn {
-  position: fixed;
-  bottom: 4rem; /* Базовый отступ */
-  right: 0.5rem;
-  z-index: 1000;
-  padding: 0.5rem 0.75rem;
-  font-size: 0.875rem;
-  max-width: calc(50vw - 1rem);
-  overflow: hidden;
-  text-overflow: ellipsis;
-  border-radius: 0.75rem;
-  min-height: 2.5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
-}
 
-/* Медиа-запросы для тулбара браузера (как в Bootstrap) */
-@media (max-height: 700px) {
-  .admin-btn {
-    bottom: 6rem; /* Больший отступ для маленьких экранов */
-  }
-}
-
-@media (max-height: 600px) {
-  .admin-btn {
-    bottom: 8rem; /* Еще больший отступ для очень маленьких экранов */
-  }
-}
 
 /* Универсальные стили кнопок */
 .button {
@@ -677,8 +647,7 @@
 /* Оптимизация для GPU */
 .app-header,
 .control-panel,
-.info-panel,
-.admin-btn {
+.info-panel {
   will-change: transform;
   transform: translateZ(0);
   backface-visibility: hidden;
@@ -688,7 +657,6 @@
 .app-header,
 .control-panel,
 .info-panel,
-.admin-btn,
 .button,
 .community-card {
   transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
@@ -713,8 +681,7 @@ img {
 @media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
   .app-header,
   .control-panel,
-  .info-panel,
-  .admin-btn {
+  .info-panel {
     border-width: 0.5px;
   }
 }
