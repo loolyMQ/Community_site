@@ -164,6 +164,8 @@
 /* Переключатель темы */
 .theme-toggle-container {
   margin-top: 0.25rem;
+  display: flex;
+  justify-content: flex-start;
 }
 
 .theme-toggle.glassmorphic {
@@ -197,28 +199,36 @@
 
 .theme-icon.dark-icon {
   left: 0.5rem;
-  opacity: 0.5;
+  opacity: 0;
+  transform: scale(0.8);
+  transition: all 0.3s ease;
 }
 
 .theme-icon.light-icon {
   right: 0.5rem;
   opacity: 1;
+  transform: scale(1);
+  transition: all 0.3s ease;
 }
 
 .theme-toggle.dark-active .theme-icon.dark-icon {
   opacity: 1;
+  transform: scale(1);
 }
 
 .theme-toggle.dark-active .theme-icon.light-icon {
-  opacity: 0.5;
+  opacity: 0;
+  transform: scale(0.8);
 }
 
 .theme-toggle.light-active .theme-icon.dark-icon {
-  opacity: 0.5;
+  opacity: 0;
+  transform: scale(0.8);
 }
 
 .theme-toggle.light-active .theme-icon.light-icon {
   opacity: 1;
+  transform: scale(1);
 }
 
 /* Кнопки управления справа */
@@ -260,6 +270,11 @@
 @media (max-width: 767px) {
   .app-header,
   .control-panel {
+    display: none !important;
+  }
+  
+  /* Скрываем плашку с заголовком на мобильных */
+  .app-title {
     display: none !important;
   }
 }
