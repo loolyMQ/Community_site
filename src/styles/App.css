@@ -266,16 +266,32 @@
   transform: translateY(-1px);
 }
 
-/* Скрываем старые элементы на мобильных */
+/* Глобальное скрытие плашки на мобильных */
 @media (max-width: 767px) {
   .app-header,
   .control-panel {
     display: none !important;
   }
   
-  /* Скрываем плашку с заголовком на мобильных */
-  .app-title {
+  /* Принудительно скрываем плашку с заголовком на мобильных */
+  .app-title,
+  .app-title *,
+  .app-title::before,
+  .app-title::after,
+  .app-header .app-title,
+  .app-header .app-title *,
+  .app-header .app-title::before,
+  .app-header .app-title::after {
     display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+    width: 0 !important;
+    height: 0 !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
   }
 }
 
@@ -1049,6 +1065,19 @@ img {
     font-size: 14px;
   }
   
+  /* Принудительно скрываем плашку */
+  .app-title,
+  .app-title *,
+  .app-title::before,
+  .app-title::after {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
+  }
+  
   .mobile-view-controls {
     top: 0.25rem;
     left: 0.25rem;
@@ -1164,6 +1193,19 @@ img {
   .App {
     padding: 0;
     font-size: 15px;
+  }
+  
+  /* Принудительно скрываем плашку */
+  .app-title,
+  .app-title *,
+  .app-title::before,
+  .app-title::after {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    position: absolute !important;
+    left: -9999px !important;
+    top: -9999px !important;
   }
   
   .mobile-view-controls {
