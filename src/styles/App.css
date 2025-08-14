@@ -1737,7 +1737,7 @@ img {
 }
 
 .search-section h3 {
-  text-align: center;
+  text-align: center !important;
 }
 
 .search-container {
@@ -2081,7 +2081,7 @@ img {
   margin-bottom: 16px;
   font-size: 18px;
   color: var(--text-primary);
-  text-align: center;
+  text-align: center !important;
 }
 
 .category-buttons {
@@ -2302,6 +2302,8 @@ img {
   display: flex;
   gap: 4px;
   overflow-x: auto;
+  position: relative;
+  z-index: 10;
 }
 
 /* Мобильная версия админ панели */
@@ -2387,6 +2389,8 @@ img {
   flex: 1;
   padding: 20px;
   overflow-y: auto;
+  position: relative;
+  z-index: 1;
 }
 
 .admin-dashboard {
