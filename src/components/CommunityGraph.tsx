@@ -12,9 +12,29 @@ import AdminPanel from './AdminPanel';
 import Orb from './Orb';
 import { debounce } from '../utils/debounce';
 
+// Хук для определения размера экрана
+const useIsMobile = () => {
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkIsMobile = () => {
+      setIsMobile(window.innerWidth <= 767);
+    };
+
+    checkIsMobile();
+    window.addEventListener('resize', checkIsMobile);
+    return () => window.removeEventListener('resize', checkIsMobile);
+  }, []);
+
+  return isMobile;
+};
+
 const CommunityGraph: React.FC = () => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   // const navigate = useNavigate();
+  
+  // Определяем размер экрана
+  const isMobile = useIsMobile();
   
   // Загружаем данные сообществ
   const { communities, categories, relationships, loading, error, refresh } = useCommunities();
@@ -627,90 +647,94 @@ const CommunityGraph: React.FC = () => {
         </div>
       )}
 
-      {/* Десктопный интерфейс */}
-      <div className="app-header">
-        <div className="app-title shiny-text" data-text="Карта студенческих сообществ">Карта студенческих сообществ</div>
-        
-        {/* Переключатель режимов */}
-        <div className="view-mode-switcher">
-          <button 
-            className={`view-mode-btn ${viewMode === 'graph' ? 'active' : ''}`}
-            onClick={() => setViewMode('graph')}
-          >
-            <span className="shiny-text" data-text="🕸️ Граф">🕸️ Граф</span>
-          </button>
-          <button 
-            className={`view-mode-btn ${viewMode === 'list' ? 'active' : ''}`}
-            onClick={() => setViewMode('list')}
-          >
-            <span className="shiny-text" data-text="📋 Список">📋 Список</span>
-          </button>
-        </div>
+      {/* Десктопный интерфейс - только на больших экранах */}
+      {!isMobile && (
+        <>
+          <div className="app-header">
+            <div className="app-title shiny-text" data-text="Карта студенческих сообществ">Карта студенческих сообществ</div>
+            
+            {/* Переключатель режимов */}
+            <div className="view-mode-switcher">
+              <button 
+                className={`view-mode-btn ${viewMode === 'graph' ? 'active' : ''}`}
+                onClick={() => setViewMode('graph')}
+              >
+                <span className="shiny-text" data-text="🕸️ Граф">🕸️ Граф</span>
+              </button>
+              <button 
+                className={`view-mode-btn ${viewMode === 'list' ? 'active' : ''}`}
+                onClick={() => setViewMode('list')}
+              >
+                <span className="shiny-text" data-text="📋 Список">📋 Список</span>
+              </button>
+            </div>
 
-        {/* Переключатель тем */}
-        <div className="theme-switcher">
-          <button 
-            className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
-            onClick={() => setTheme('dark')}
-          >
-            <span className="shiny-text" data-text="🌙 Темная">🌙 Темная</span>
-          </button>
-          <button 
-            className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
-            onClick={() => setTheme('light')}
-          >
-            <span className="shiny-text" data-text="☀️ Светлая">☀️ Светлая</span>
-          </button>
-        </div>
-      </div>
+            {/* Переключатель тем */}
+            <div className="theme-switcher">
+              <button 
+                className={`theme-btn ${theme === 'dark' ? 'active' : ''}`}
+                onClick={() => setTheme('dark')}
+              >
+                <span className="shiny-text" data-text="🌙 Темная">🌙 Темная</span>
+              </button>
+              <button 
+                className={`theme-btn ${theme === 'light' ? 'active' : ''}`}
+                onClick={() => setTheme('light')}
+              >
+                <span className="shiny-text" data-text="☀️ Светлая">☀️ Светлая</span>
+              </button>
+            </div>
+          </div>
 
-      {/* Панель управления */}
-      {viewMode === 'graph' && (
-        <div className="control-panel">
-          <h3>Управление</h3>
-          <div className="control-group">
-            <label className="control-label">Масштаб: {Math.round(scale * 100)}%</label>
-            <input
-              type="range"
-              min="0.1"
-              max="3"
-              step="0.1"
-              value={scale}
-              onChange={(e) => setScale(parseFloat(e.target.value))}
-              className="control-input"
-            />
-          </div>
-          
-          <div className="control-group">
-            <button 
-              className="button"
-              onClick={() => {
-                setOffset({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
-                setScale(1);
-              }}
-            >
-              <span className="shiny-text" data-text="Сбросить вид">Сбросить вид</span>
-            </button>
-          </div>
-          <div className="control-group">
-            <button 
-              className="button"
-              onClick={() => {
-                // Сбрасываем позиции всех узлов
-                graphData.nodes.forEach((node, index) => {
-                  const angle = (index / graphData.nodes.length) * 2 * Math.PI;
-                  const radius = 400 + Math.random() * 300;
-                  setNodePosition(node.id, 
-                    Math.cos(angle) * radius, 
-                    Math.sin(angle) * radius
-                  );
-                });
-              }}
-            >
-              <span className="shiny-text" data-text="Перемешать узлы">Перемешать узлы</span>
-            </button>
-          </div>
-        </div>
+          {/* Панель управления */}
+          {viewMode === 'graph' && (
+            <div className="control-panel">
+              <h3>Управление</h3>
+              <div className="control-group">
+                <label className="control-label">Масштаб: {Math.round(scale * 100)}%</label>
+                <input
+                  type="range"
+                  min="0.1"
+                  max="3"
+                  step="0.1"
+                  value={scale}
+                  onChange={(e) => setScale(parseFloat(e.target.value))}
+                  className="control-input"
+                />
+              </div>
+              
+              <div className="control-group">
+                <button 
+                  className="button"
+                  onClick={() => {
+                    setOffset({ x: window.innerWidth / 2, y: window.innerHeight / 2 });
+                    setScale(1);
+                  }}
+                >
+                  <span className="shiny-text" data-text="Сбросить вид">Сбросить вид</span>
+                </button>
+              </div>
+              <div className="control-group">
+                <button 
+                  className="button"
+                  onClick={() => {
+                    // Сбрасываем позиции всех узлов
+                    graphData.nodes.forEach((node, index) => {
+                      const angle = (index / graphData.nodes.length) * 2 * Math.PI;
+                      const radius = 400 + Math.random() * 300;
+                      setNodePosition(node.id, 
+                        Math.cos(angle) * radius, 
+                        Math.sin(angle) * radius
+                      );
+                    });
+                  }}
+                >
+                  <span className="shiny-text" data-text="Перемешать узлы">Перемешать узлы</span>
+                </button>
+              </div>
+            </div>
+          )}
+        </>
       )}
 
       {/* Кнопка входа в админ-панель */}
