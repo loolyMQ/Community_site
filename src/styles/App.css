@@ -413,7 +413,7 @@
 /* Информационная панель - мобильная версия */
 .info-panel {
   position: fixed;
-  bottom: 4rem; /* Отступ для тулбара браузера */
+  bottom: calc(4rem + env(safe-area-inset-bottom, 0px)); /* Отступ для тулбара браузера + безопасная зона */
   left: 0.5rem;
   z-index: 1000;
   background: var(--bg-secondary);
@@ -538,7 +538,7 @@
 /* Кнопка админа - мобильная версия */
 .admin-btn {
   position: fixed;
-  bottom: 4rem; /* Отступ для тулбара браузера */
+  bottom: calc(4rem + env(safe-area-inset-bottom, 0px)); /* Отступ для тулбара браузера + безопасная зона */
   right: 0.5rem;
   z-index: 1000;
   padding: 0.5rem 0.75rem;
@@ -872,6 +872,11 @@ img {
   .category-filter h3 {
     font-size: 14px;
     margin: 0 0 8px 0;
+    text-align: center; /* Центрируем заголовок */
+  }
+  
+  .search-section h3 {
+    text-align: center; /* Центрируем заголовок поиска */
   }
 
   .category-btn {
