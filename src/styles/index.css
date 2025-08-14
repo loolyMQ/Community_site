@@ -169,6 +169,17 @@ body {
   position: relative;
 }
 
+/* Мобильная версия модального окна */
+@media (max-width: 768px) {
+  .modal {
+    max-width: 350px;
+    width: 85%;
+    padding: 16px;
+    padding-top: 32px;
+    max-height: 70vh;
+  }
+}
+
 .modal-header {
   display: flex;
   justify-content: space-between;
