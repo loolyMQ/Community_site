@@ -315,6 +315,12 @@
   .graph-view {
     padding: 0; /* Убираем ВСЕ отступы */
   }
+  
+  /* Список тоже должен начинаться от верха */
+  .community-list {
+    padding: 0 !important; /* Убираем все отступы */
+    margin: 0 !important; /* Убираем все отступы */
+  }
 }
 
 /* Заголовок приложения - мобильная версия */
@@ -419,6 +425,7 @@
   overflow-y: auto;
   border: 1px solid var(--border-primary);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  pointer-events: auto; /* Разрешаем взаимодействие */
 }
 
 .info-panel h3 {
@@ -474,6 +481,9 @@
     z-index: 1 !important; /* Под кнопками управления */
     display: block !important; /* Блочный элемент */
     box-sizing: border-box !important; /* Учитываем границы в размерах */
+    transform: none !important; /* Убираем трансформации */
+    border: none !important; /* Убираем границы */
+    outline: none !important; /* Убираем обводку */
   }
 }
 

@@ -781,8 +781,6 @@ const CommunityGraph: React.FC = () => {
             onTouchEnd={handleTouchEnd}
             style={{ 
               cursor: isDragging ? 'grabbing' : 'grab',
-              position: 'relative',
-              zIndex: 10,
               touchAction: 'none' // Отключаем стандартные жесты браузера
             }}
           />
