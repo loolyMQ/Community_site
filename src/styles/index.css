@@ -244,6 +244,7 @@ body {
   display: flex;
   flex-direction: column;
   max-height: 90vh;
+  min-height: 60vh; /* Минимальная высота */
 }
 
 .modal-community .modal-content {
@@ -308,11 +309,29 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* Фиксированные вкладки */
+.modal-community .modal-tabs {
+  position: sticky;
+  top: 60px; /* Высота заголовка */
+  background: var(--modal-bg);
+  z-index: 9;
+  border-bottom: 1px solid var(--border-color);
+  padding: 0 20px;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
 /* Стили для заголовка в светлой теме */
 [data-theme="light"] .modal-community .modal-header {
   background: rgba(255, 255, 255, 0.95);
   border-bottom: 1px solid #e0e0e0;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+[data-theme="light"] .modal-community .modal-tabs {
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Стили для заголовка в темной теме */
@@ -322,14 +341,21 @@ body {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
+[data-theme="dark"] .modal-community .modal-tabs {
+  background: rgba(26, 26, 26, 0.95);
+  border-bottom: 1px solid #444444;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 /* Прокручиваемое тело модального окна */
 .modal-community .modal-body {
   flex: 1;
   overflow-y: auto;
   padding: 20px;
-  max-height: calc(90vh - 80px); /* Вычитаем высоту заголовка */
+  max-height: calc(90vh - 140px); /* Увеличиваем отступ для заголовка и вкладок */
   scroll-behavior: smooth;
   -webkit-overflow-scrolling: touch;
+  padding-bottom: 40px; /* Дополнительный отступ снизу для комфортной прокрутки */
 }
 
 /* Стили для скроллбара в модальном окне */
@@ -357,6 +383,23 @@ body {
 
 [data-theme="dark"] .modal-community .modal-body::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.3);
+}
+
+/* Мобильная оптимизация прокрутки */
+@media (max-width: 768px) {
+  .modal-community {
+    max-height: 95vh; /* Больше места на мобильных */
+    min-height: 70vh;
+  }
+  
+  .modal-community .modal-body {
+    max-height: calc(95vh - 160px); /* Больше места для контента */
+    padding-bottom: 60px; /* Больше отступа снизу */
+  }
+  
+  .modal-community .modal-tabs {
+    top: 70px; /* Больше места для заголовка на мобильных */
+  }
 }
 
 /* Стили для отзывов в модальном окне */
