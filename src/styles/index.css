@@ -247,6 +247,8 @@ body {
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;
+  max-width: 100%;
+  box-sizing: border-box;
 }
 
 .modal-community p,
@@ -257,11 +259,34 @@ body {
 .modal-community h5,
 .modal-community h6,
 .modal-community span,
-.modal-community div {
+.modal-community div,
+.modal-community label,
+.modal-community a {
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;
   max-width: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* Специальные стили для длинного текста */
+.modal-community .form-group {
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.modal-community .form-group p {
+  white-space: normal;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+}
+
+/* Стили для ссылок в модальном окне */
+.modal-community a {
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 /* Формы */
