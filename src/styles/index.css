@@ -166,7 +166,6 @@ body {
   width: 90%;
   max-height: 80vh;
   overflow-y: auto;
-  overflow-x: hidden;
   position: relative;
 }
 
@@ -233,6 +232,32 @@ body {
 .modal-body h6,
 .modal-body span,
 .modal-body div {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+}
+
+/* Специальные стили для модального окна сообщества */
+.modal-community {
+  overflow-x: hidden;
+}
+
+.modal-community .modal-content {
+  word-wrap: break-word;
+  word-break: break-word;
+  overflow-wrap: break-word;
+}
+
+.modal-community p,
+.modal-community h1,
+.modal-community h2,
+.modal-community h3,
+.modal-community h4,
+.modal-community h5,
+.modal-community h6,
+.modal-community span,
+.modal-community div {
   word-wrap: break-word;
   word-break: break-word;
   overflow-wrap: break-word;

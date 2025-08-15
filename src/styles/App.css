@@ -1740,6 +1740,12 @@ img {
   text-align: center !important;
 }
 
+/* Центрирование для shiny-text заголовков */
+.category-filter h3.shiny-text,
+.search-section h3.shiny-text {
+  text-align: center !important;
+}
+
 .search-container {
   position: relative;
   display: flex;
