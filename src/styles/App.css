@@ -1746,6 +1746,23 @@ img {
   text-align: center !important;
 }
 
+/* Принудительное центрирование заголовков на мобильных устройствах */
+@media (max-width: 768px) {
+  .category-filter h3,
+  .search-section h3 {
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+  }
+  
+  .category-filter h3.shiny-text,
+  .search-section h3.shiny-text {
+    text-align: center !important;
+    width: 100% !important;
+    display: block !important;
+  }
+}
+
 .search-container {
   position: relative;
   display: flex;
