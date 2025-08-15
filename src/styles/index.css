@@ -304,6 +304,22 @@ body {
   border-bottom: 1px solid var(--border-color);
   padding: 16px 20px;
   flex-shrink: 0;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для заголовка в светлой теме */
+[data-theme="light"] .modal-community .modal-header {
+  background: rgba(255, 255, 255, 0.95);
+  border-bottom: 1px solid #e0e0e0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для заголовка в темной теме */
+[data-theme="dark"] .modal-community .modal-header {
+  background: rgba(26, 26, 26, 0.95);
+  border-bottom: 1px solid #444444;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
 }
 
 /* Прокручиваемое тело модального окна */
@@ -312,6 +328,35 @@ body {
   overflow-y: auto;
   padding: 20px;
   max-height: calc(90vh - 80px); /* Вычитаем высоту заголовка */
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Стили для скроллбара в модальном окне */
+.modal-community .modal-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.modal-community .modal-body::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.modal-community .modal-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.modal-community .modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Стили для скроллбара в темной теме */
+[data-theme="dark"] .modal-community .modal-body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+[data-theme="dark"] .modal-community .modal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
 }
 
 /* Стили для отзывов в модальном окне */
